@@ -1,34 +1,40 @@
 /* jshint indent: 2 */
+const Sequelize = require('Sequelize');
+const db = require('../config/database');
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('game', {
+
+const Game = db.define('game', {
     idgame: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     name_game: {
-      type: DataTypes.STRING,
+      type: Sequelize.STRING,
       allowNull: false
     },
     time_game: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     created_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     updated_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'game',
+    timestamps: true,
+    createdAt: false,
+    updatedAt: false,
     schema: 'public'
   });
-};
+
+module.exports = Game;

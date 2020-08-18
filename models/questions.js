@@ -1,15 +1,16 @@
 /* jshint indent: 2 */
+const Sequelize = require('Sequelize');
+const db = require('../config/database');
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('questions', {
+const Questions = db.define('questions', {
     idquestion: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     idgame: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: {
@@ -19,22 +20,26 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     json_question: {
-      type: DataTypes.JSON,
+      type: Sequelize.JSON,
       allowNull: false
     },
     created_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     updated_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'questions',
+    timestamps: true,
+    createdAt: false,
+    updatedAt: false,
     schema: 'public'
   });
-};
+
+module.exports = Questions;

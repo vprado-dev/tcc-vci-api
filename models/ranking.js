@@ -1,15 +1,17 @@
 /* jshint indent: 2 */
+const Sequelize = require('sequelize');
+const db = require('../config/database');
 
-module.exports = function(sequelize, DataTypes) {
-  return sequelize.define('ranking', {
+
+const Ranking = db.define('ranking', {
     idranking: {
       autoIncrement: true,
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true
     },
     idgame: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: {
@@ -19,7 +21,7 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     iduser: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false,
       references: {
         model: {
@@ -29,26 +31,30 @@ module.exports = function(sequelize, DataTypes) {
       }
     },
     points: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     time: {
-      type: DataTypes.INTEGER,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     created_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     },
     updated_at: {
-      type: DataTypes.DATE,
+      type: Sequelize.DATE,
       allowNull: false,
-      defaultValue: sequelize.literal('CURRENT_TIMESTAMP')
+      defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
   }, {
-    sequelize,
+    Sequelize,
     tableName: 'ranking',
+    timestamps: true,
+    createdAt: false,
+    updatedAt: false,
     schema: 'public'
   });
-};
+
+module.exports = Ranking;
