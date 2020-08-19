@@ -4,7 +4,7 @@ const router = express.Router();
 const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const User = require('../models/users');
+const User = require('../database/models/users');
 const { isNullOrUndefined } = require('util');
 
 router.post('/',jsonParser, async function(req, res){
