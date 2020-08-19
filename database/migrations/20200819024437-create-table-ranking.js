@@ -1,9 +1,7 @@
-/* jshint indent: 2 */
-const Sequelize = require('sequelize');
-const db = require('../config/database');
+'use strict';
 
-
-const Ranking = db.define('ranking', {
+module.exports = {
+  up: async (queryInterface, Sequelize) => queryInterface.createTable('ranking',{
     idranking: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
@@ -48,13 +46,6 @@ const Ranking = db.define('ranking', {
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
-  }, {
-    Sequelize,
-    tableName: 'ranking',
-    timestamps: true,
-    createdAt: false,
-    updatedAt: false,
-    schema: 'public'
-  });
-
-module.exports = Ranking;
+  }),
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable('ranking')
+};

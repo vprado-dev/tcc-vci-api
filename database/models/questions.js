@@ -1,29 +1,26 @@
 /* jshint indent: 2 */
-const Sequelize = require('sequelize');
-const db = require('../config/database');
+const Sequelize = require('Sequelize');
+const db = require('../../config/database');
 
-
-const Users = db.define('users', {
-    iduser: {
+const Questions = db.define('questions', {
+    idquestion: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name_user: {
-      type: Sequelize.STRING,
-      allowNull: false
+    idgame: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+      references: {
+        model: {
+          tableName: 'game',
+        },
+        key: 'idgame'
+      }
     },
-    email_user: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    password_user: {
-      type: Sequelize.STRING,
-      allowNull: false
-    },
-    admin: {
-      type: Sequelize.BOOLEAN,
+    json_question: {
+      type: Sequelize.JSON,
       allowNull: false
     },
     created_at: {
@@ -38,11 +35,11 @@ const Users = db.define('users', {
     }
   }, {
     Sequelize,
-    tableName: 'users',
+    tableName: 'questions',
     timestamps: true,
     createdAt: false,
     updatedAt: false,
     schema: 'public'
   });
 
-module.exports = Users;
+module.exports = Questions;

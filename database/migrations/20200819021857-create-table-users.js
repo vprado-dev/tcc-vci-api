@@ -1,21 +1,27 @@
-/* jshint indent: 2 */
-const Sequelize = require('Sequelize');
-const db = require('../config/database');
+'use strict';
 
-
-const Game = db.define('game', {
-    idgame: {
+module.exports = {
+  up: async (queryInterface, Sequelize) => queryInterface.createTable("users",{
+    iduser: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
       allowNull: false,
       primaryKey: true
     },
-    name_game: {
+    name_user: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    time_game: {
-      type: Sequelize.INTEGER,
+    email_user: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    password_user: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    admin: {
+      type: Sequelize.BOOLEAN,
       allowNull: false
     },
     created_at: {
@@ -28,13 +34,6 @@ const Game = db.define('game', {
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
-  }, {
-    Sequelize,
-    tableName: 'game',
-    timestamps: true,
-    createdAt: false,
-    updatedAt: false,
-    schema: 'public'
-  });
-
-module.exports = Game;
+  }),
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable("users")
+};

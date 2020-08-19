@@ -1,8 +1,7 @@
-/* jshint indent: 2 */
-const Sequelize = require('Sequelize');
-const db = require('../config/database');
+'use strict';
 
-const Questions = db.define('questions', {
+module.exports = {
+  up: async (queryInterface, Sequelize) => queryInterface.createTable('questions',{
     idquestion: {
       autoIncrement: true,
       type: Sequelize.INTEGER,
@@ -33,13 +32,6 @@ const Questions = db.define('questions', {
       allowNull: false,
       defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
     }
-  }, {
-    Sequelize,
-    tableName: 'questions',
-    timestamps: true,
-    createdAt: false,
-    updatedAt: false,
-    schema: 'public'
-  });
-
-module.exports = Questions;
+  }),
+  down: async (queryInterface, Sequelize) => queryInterface.dropTable('questions')
+};
