@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
-const Sequelize = require('sequelize');
-const db = require('../../config/database');
+const { db , Sequelize } = require('../../config/objetos');
+
 
 
 const Users = db.define('users', {

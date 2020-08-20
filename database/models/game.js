@@ -1,7 +1,5 @@
 /* jshint indent: 2 */
-const Sequelize = require('Sequelize');
-const db = require('../../config/database');
-
+const { db , Sequelize } = require('../../config/objetos');
 
 const Game = db.define('game', {
     idgame: {
