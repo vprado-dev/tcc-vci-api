@@ -1,17 +1,17 @@
-const express = require('express');
+const express    = require('express');
+const dotenv     = require('dotenv');
+const bodyParser = require('body-parser');
+const cors       = require('cors');
+const { db }     = require('./config/objetos');
+const morgan     = require('morgan');
 const app = express();
-
-const dotenv = require('dotenv');
 dotenv.config();
 
-const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const cors = require('cors');
 
 //Banco
-const db = require('./config/database');
-
+app.use(morgan('dev'));
 app.use((req, res, next) => {
     //Qual site tem permissão de realizar a conexão, no exemplo abaixo está o "*" indicando que qualquer site pode fazer a conexão
     try{

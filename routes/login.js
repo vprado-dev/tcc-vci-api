@@ -1,34 +1,61 @@
-const express = require('express');
+const express               = require('express');
+const bodyParser            = require('body-parser');
+const User                  = require('../database/models/users');
+const jwt                   = require('jsonwebtoken');
+const { isNullOrUndefined } = require('util');
 const router = express.Router();
 
-const bodyParser = require('body-parser');
 const jsonParser = bodyParser.json();
 
-const User = require('../database/models/users');
-const { isNullOrUndefined } = require('util');
 
 router.post('/',jsonParser, async function(req, res){
 
+    const user = {
+        email_user : req.body.login,
+        password_user : req.body.password
+    };
     const result = await User.findAll({
         where: {
-            email_user : req.body.login,
-            password_user : req.body.password
+            user
         }
     })
     .catch(function(err){
-        console.log(err);
+        res.json({
+            success : 'false',
+            message: 'Erro ao procurar usuário na base de dados'
+        })
     });
     if(result.length != 0 && !isNullOrUndefined(result)){
-        console.log(result.lenght);
+        var token = jwt.sign(user,process.env.STRING_TOKEN_ENCODE);
         res.json({
-            mensagem: "logou"
+            success : 'true',
+            message : 'Usuário conectado com sucesso',
+            token   : token
         });
     }else{
-        console.log(result);
         res.json({
-            mensagem: "n logou"
+            success : 'false',
+            message : 'Usuário não conectado'
         });
     }
 });
-
+router.post('/teste-token',jsonParser,async function(req, res){
+    const token = req.body.token;
+    if (token) {
+        jwt.verify(token, process.env.STRING_TOKEN_ENCODE, function (err, decoded) {
+            if (err) {
+                return res.json({
+                    success: false,
+                    message: 'Falha ao tentar autenticar o token!'
+                });
+            } else {
+                //se tudo correr bem, salver a requisição para o uso em outras rotas
+                req.decoded = decoded;
+                res.json({
+                    success : 'true'
+                })
+            }
+        });
+    }
+})
 module.exports = router;
