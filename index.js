@@ -39,6 +39,12 @@ app.get('/', async function(req,res){
 });
 //Rota login
 app.use('/login', require('./routes/login'));
+app.use('/users', require('./routes/users'));
+app.use((error,req,res,next) => {
+    res.status(error.httpStatusCode).json({
+        error
+    })
+})
 
 app.listen(3333,function(){
     console.log("Servidor ativo na porta 3333");

@@ -3,7 +3,7 @@ const bodyParser            = require('body-parser');
 const User                  = require('../database/models/users');
 const jwt                   = require('jsonwebtoken');
 const { isNullOrUndefined } = require('util');
-const router = express.Router();
+const router                = express.Router();
 
 const jsonParser = bodyParser.json();
 
@@ -15,9 +15,7 @@ router.post('/',jsonParser, async function(req, res){
         password_user : req.body.password
     };
     const result = await User.findAll({
-        where: {
-            user
-        }
+        where: user
     })
     .catch(function(err){
         res.json({
@@ -26,12 +24,15 @@ router.post('/',jsonParser, async function(req, res){
         })
     });
     if(result.length != 0 && !isNullOrUndefined(result)){
-        var token = jwt.sign(user,process.env.STRING_TOKEN_ENCODE);
+        var token = jwt.sign(user,process.env.STRING_TOKEN_ENCODE,{
+            expiresIn: "10h"
+        });
         res.json({
             success : 'true',
             message : 'Usuário conectado com sucesso',
             token   : token
         });
+        // res.redirect('/');
     }else{
         res.json({
             success : 'false',
