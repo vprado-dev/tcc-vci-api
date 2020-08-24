@@ -8,4 +8,4 @@
 >## PRIMEIRA VEZ UTILIZANDO
   1. Rodar `npm i` no terminal do projeto
   2. Rodar `sequelize db:migrate`
-  3. Rodar `sequelize db:seed:all
+  3. Rodar `sequelize db:seed:all`
