@@ -14,10 +14,18 @@ const Users = db.define('users', {
       type: Sequelize.STRING,
       allowNull: false
     },
+    nickname_user: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
     email_user: {
       type: Sequelize.STRING,
       allowNull: false,
       unique:true
+    },
+    cpf_user : {
+      type: Sequelize.STRING,
+      allowNull: false
     },
     password_user: {
       type: Sequelize.STRING,

@@ -66,7 +66,9 @@ router.post('/',jsonParser,async function (req,res,next){
         const dados = req.body;
         const result = await User.create({
             name_user : dados.name,
+            nickname_user: dados.nickname,
             email_user : dados.email,
+            cpf_user : dados.cpf,
             password_user : dados.password,
             admin :dados.admin
         })
