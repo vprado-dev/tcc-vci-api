@@ -20,9 +20,7 @@ function dig(n1, n2, n3) {
 	})
 	let faltando = semitotal%11;
 	let retorno = (semitotal-faltando) +11 - semitotal;
-    console.log(semitotal,faltando)
 	return retorno <=9 ? '0' + retorno : retorno;
-	
 }
 gerarCpf();
 function aleatorio() {
