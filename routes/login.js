@@ -11,7 +11,7 @@ const jsonParser = bodyParser.json();
 router.post('/',jsonParser, async function(req, res){
 
     const user = {
-        email_user : req.body.login,
+        nickname_user : req.body.login,
         password_user : req.body.password
     };
     const result = await User.findAll({
@@ -30,7 +30,7 @@ router.post('/',jsonParser, async function(req, res){
         res.json({
             success : 'true',
             message : 'Usuário conectado com sucesso',
-            token   : token
+            token   :  token
         });
         // res.redirect('/');
     }else{
@@ -46,7 +46,7 @@ router.post('/teste-token',jsonParser,async function(req, res){
         jwt.verify(token, process.env.STRING_TOKEN_ENCODE, function (err, decoded) {
             if (err) {
                 return res.json({
-                    success: false,
+                    success: 'false',
                     message: 'Falha ao tentar autenticar o token!'
                 });
             } else {
