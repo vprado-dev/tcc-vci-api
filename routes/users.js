@@ -1,7 +1,9 @@
 const express               = require('express');
 const bodyParser            = require('body-parser');
-const User                  = require('../database/models/users');
 const jwt                   = require('jsonwebtoken');
+const bcrypt                = require('bcrypt');
+
+const User                  = require('../database/models/users');
 const { route }             = require('./login');
 const router                = express.Router();
 const jsonParser = bodyParser.json();
@@ -30,7 +32,7 @@ router.get('/ids',jsonParser,async function (req,res,next){
                 iduser : req.body.ids
             }
         })
-        if(result.length >0 ) {
+        if(result.length > 0) {
             res.json(result);
         } else {
             throw new Error("Ids inexistentes");
@@ -64,7 +66,8 @@ router.get("/:id",jsonParser,async function (req, res, next) {
 router.post('/',jsonParser,async function (req,res,next){
     try {
         const dados = req.body;
-        dados.password = dados.cpf;
+        const salt = bcrypt.genSaltSync(12) 
+        dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
         dados.admin = false;

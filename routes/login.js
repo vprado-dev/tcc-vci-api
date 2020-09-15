@@ -1,5 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const bcrypt = require("bcrypt");
 const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
 const { isNullOrUndefined } = require("util");
@@ -12,28 +13,40 @@ router.post("/", jsonParser, async function (req, res) {
         nickname_user: req.body.login,
         password_user: req.body.password,
     };
-    const result = await User.findAll({
-        where: user,
+    
+    const result = await User.findOne({
+        where: {
+            nickname_user: user.nickname_user,
+        }
     }).catch(function (err) {
         res.json({
             success: "false",
-            message: "Erro ao procurar usuário na base de dados",
+            message: "Erro! Usuário não encrontrado.",
         });
     });
+
     if (result.length != 0 && !isNullOrUndefined(result)) {
-        var token = jwt.sign(user, process.env.STRING_TOKEN_ENCODE, {
-            expiresIn: "10h",
-        });
-        res.json({
-            success: "true",
-            message: "Usuário conectado com sucesso",
-            token: token,
-        });
-        // res.redirect('/');
+        if(bcrypt.compareSync(user.password_user, result.password_user)) {
+            var token = jwt.sign(user, process.env.STRING_TOKEN_ENCODE, {
+                expiresIn: "10h",
+            });
+            res.json({
+                success: "true",
+                message: "Usuário conectado com sucesso.",
+                token: token,
+            });
+            // res.redirect('/');
+        }
+        else {
+            res.json({
+                success: "false",
+                message: "Erro! Usuário não conectado, dados incorretos.",
+            });
+        }
     } else {
         res.json({
             success: "false",
-            message: "Usuário não conectado",
+            message: "Erro! Usuário não conectado.",
         });
     }
 });
