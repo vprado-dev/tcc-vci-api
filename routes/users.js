@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 const { route } = require("./login");
 const router = express.Router();
 const jsonParser = bodyParser.json();
+const sendMail = require("../src/email");
 
 router.get("/all", jsonParser, async function (req, res) {
     try {
@@ -63,7 +64,7 @@ router.get("/:id", jsonParser, async function (req, res, next) {
 router.post("/", jsonParser, async function (req, res, next) {
     try {
         const dados = req.body;
-        const salt = bcrypt.genSaltSync(12) 
+        const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
@@ -91,5 +92,9 @@ router.post("/", jsonParser, async function (req, res, next) {
             error: e.parent,
         });
     }
+});
+router.post("/email", jsonParser, async function (req, res) {
+    var dados = req.body;
+    sendMail(res,dados.destinatario, dados.assunto, dados.texto)
 });
 module.exports = router;
