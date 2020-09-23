@@ -63,7 +63,8 @@ router.get("/:id", jsonParser, async function (req, res, next) {
 router.post("/", jsonParser, async function (req, res, next) {
     try {
         const dados = req.body;
-        dados.password = dados.cpf;
+        const salt = bcrypt.genSaltSync(12) 
+        dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
         dados.admin = false;
