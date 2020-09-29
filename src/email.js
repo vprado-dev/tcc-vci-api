@@ -12,7 +12,7 @@ function sendMail(res,destinatario,assunto,texto) {
         from: 'treinamentos.vci@gmail.com',
         to: destinatario,
         subject: assunto,
-        text: texto
+        html: texto
     };
     let resposta;
     transporter.sendMail(mailOptions, function(error, info){
@@ -26,6 +26,5 @@ function sendMail(res,destinatario,assunto,texto) {
             });
         }
     });
-    return resposta;
 }
 module.exports = sendMail;

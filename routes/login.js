@@ -21,7 +21,7 @@ router.post("/", jsonParser, async function (req, res) {
     }).catch(function (err) {
         res.json({
             success: "false",
-            message: "Erro! Usuário não encrontrado.",
+            message: "Erro! Usuário não encontrado.",
         });
     });
 

@@ -2,12 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
+const bcrypt = require('bcrypt');
 const { route } = require("./login");
 const router = express.Router();
 const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
-
-router.get("/all", jsonParser, async function (req, res) {
+router.use(jsonParser);
+router.get("/all", async function (req, res) {
     try {
         User.findAll()
             .then(function (resultados) {
@@ -23,7 +24,7 @@ router.get("/all", jsonParser, async function (req, res) {
         });
     }
 });
-router.get("/ids", jsonParser, async function (req, res, next) {
+router.get("/ids", async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
@@ -42,26 +43,7 @@ router.get("/ids", jsonParser, async function (req, res, next) {
         });
     }
 });
-router.get("/:id", jsonParser, async function (req, res, next) {
-    try {
-        const result = await User.findAll({
-            where: {
-                iduser: req.params.id,
-            },
-        });
-        if (result.length > 0) {
-            res.json(result);
-        } else {
-            throw new Error("Erro ao procurar usuário pelo id");
-        }
-    } catch (e) {
-        res.json({
-            success: false,
-            message: e.message,
-        });
-    }
-});
-router.post("/", jsonParser, async function (req, res, next) {
+router.post("/", async function (req, res, next) {
     try {
         const dados = req.body;
         const salt = bcrypt.genSaltSync(12);
@@ -93,8 +75,17 @@ router.post("/", jsonParser, async function (req, res, next) {
         });
     }
 });
-router.post("/email", jsonParser, async function (req, res) {
+router.post("/email", async function (req, res) {
     var dados = req.body;
     sendMail(res,dados.destinatario, dados.assunto, dados.texto)
 });
+router.post("/check-valid-email",async function (req, res,next) {
+    var dados = req.body;
+    var result = await User.findOne({
+        where : {
+            email_user : dados.email
+        }
+    });
+    sendMail(res,dados.email,"Esqueci minha senha","Olá, sua senha do treinamento da empresa VCI é :" + result.cpf_user) // pode melhorar com um html
+})
 module.exports = router;
