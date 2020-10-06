@@ -37,7 +37,27 @@ router.get('/ids',jsonParser,async function (req,res,next){
         }
     } catch (e) {
         res.json({
-            sucess : false,
+            success : false,
+            message: e.message
+        })
+    }
+})
+router.get('/admins',jsonParser,async function (req,res,next){
+    try {
+        const result = await User.findAll({
+            where : {
+                admin : true
+            }
+        })
+        console.log(result);
+        if(result.length >0 ) {
+            res.json(result);
+        } else {
+            throw new Error("Admins inexistentes");
+        }
+    } catch (e) {
+        res.json({
+            success : false,
             message: e.message
         })
     }
@@ -67,7 +87,7 @@ router.post('/',jsonParser,async function (req,res,next){
         dados.password = dados.cpf;
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
-        dados.admin = false;
+        dados.admin ? '' : dados.admin = false;
         console.log(dados);
         const result = await User.create({ // tratar melhor todos os erros, esta com muita brecha ainda
             name_user     : dados.nome,
