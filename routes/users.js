@@ -38,6 +38,49 @@ router.get("/ids", async function (req, res, next) {
         }
     } catch (e) {
         res.json({
+
+            success : false,
+            message: e.message
+        })
+    }
+})
+router.get('/admins',jsonParser,async function (req,res,next){
+    try {
+        const result = await User.findAll({
+            where : {
+                admin : true
+            }
+        })
+        console.log(result);
+        if(result.length >0 ) {
+            res.json(result);
+        } else {
+            throw new Error("Admins inexistentes");
+        }
+    } catch (e) {
+        res.json({
+            success : false,
+            message: e.message
+        })
+    }
+})
+router.get("/:id",jsonParser,async function (req, res, next) {
+    try{
+        const result = await User.findAll({
+            where: {
+                iduser : req.params.id
+            }
+        })
+        if(result.length > 0) {
+            res.json(result)
+        } else {
+            throw new Error("Erro ao procurar usuário pelo id");
+        }
+    } catch (e) {
+        res.json({
+            success: false,
+            message: e.message
+
             sucess: false,
             message: e.message,
         });
@@ -50,7 +93,7 @@ router.post("/", async function (req, res, next) {
         dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
-        dados.admin = false;
+        dados.admin ? '' : dados.admin = false;
         console.log(dados);
         const result = await User.create({
             // tratar melhor todos os erros, esta com muita brecha ainda
