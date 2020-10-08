@@ -25,7 +25,7 @@ router.post("/", jsonParser, async function (req, res) {
         });
     });
 
-    if (result.length != 0 && !isNullOrUndefined(result)) {
+    if (result != null && !isNullOrUndefined(result)) {
         if(bcrypt.compareSync(user.password_user, result.password_user)) {
             var token = jwt.sign(user, process.env.STRING_TOKEN_ENCODE, {
                 expiresIn: "10h",

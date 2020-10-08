@@ -91,7 +91,6 @@ router.post("/", async function (req, res, next) {
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
         dados.nome += dados.sobrenome;
         dados.admin ? '' : dados.admin = false;
-        console.log(dados);
         const result = await User.create({
             // tratar melhor todos os erros, esta com muita brecha ainda
             name_user: dados.nome,
@@ -102,8 +101,10 @@ router.post("/", async function (req, res, next) {
             admin: dados.admin,
         });
         if (result !== null) {
-            console.log(result);
-            res.json(result);
+            res.json({
+                success: true,
+                result : result
+            });
         } else {
             throw new Error("Erro ao criar usuário");
         }
