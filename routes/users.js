@@ -80,9 +80,6 @@ router.get("/:id",jsonParser,async function (req, res, next) {
         res.json({
             success: false,
             message: e.message
-
-            sucess: false,
-            message: e.message,
         });
     }
 });
