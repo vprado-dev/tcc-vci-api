@@ -1,6 +1,6 @@
 /* jshint indent: 2 */
 const { db , Sequelize } = require('../../config/objetos');
-
+const User = require('./users');
 
 
 const Ranking = db.define('ranking', {
