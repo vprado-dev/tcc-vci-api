@@ -33,6 +33,11 @@ module.exports = {
       type: Sequelize.BOOLEAN,
       allowNull: false
     },
+    checked_user :{
+      type: Sequelize.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     created_at: {
       type: Sequelize.DATE,
       allowNull: false,

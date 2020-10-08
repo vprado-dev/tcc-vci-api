@@ -13,11 +13,11 @@ router.post("/", jsonParser, async function (req, res) {
         nickname_user: req.body.login,
         password_user: req.body.password,
     };
-    
+
     const result = await User.findOne({
         where: {
             nickname_user: user.nickname_user,
-        }
+        },
     }).catch(function (err) {
         res.json({
             success: "false",
@@ -26,18 +26,18 @@ router.post("/", jsonParser, async function (req, res) {
     });
 
     if (result != null && !isNullOrUndefined(result)) {
-        if(bcrypt.compareSync(user.password_user, result.password_user)) {
+        if (bcrypt.compareSync(user.password_user, result.password_user)) {
             var token = jwt.sign(user, process.env.STRING_TOKEN_ENCODE, {
                 expiresIn: "10h",
             });
             res.json({
                 success: "true",
                 message: "Usuário conectado com sucesso.",
+                admin: result.admin,
                 token: token,
             });
             // res.redirect('/');
-        }
-        else {
+        } else {
             res.json({
                 success: "false",
                 message: "Erro! Usuário não conectado, dados incorretos.",
