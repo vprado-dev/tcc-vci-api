@@ -64,6 +64,26 @@ router.get("/admins", jsonParser, async function (req, res, next) {
         });
     }
 });
+router.get("/employee", jsonParser, async function (req, res, next) {
+    try {
+        const result = await User.findAll({
+            where: {
+                admin: false,
+            },
+        });
+        console.log(result);
+        if (result.length > 0) {
+            res.json(result);
+        } else {
+            throw new Error("Funcionários inexistentes");
+        }
+    } catch (e) {
+        res.json({
+            success: false,
+            message: e.message,
+        });
+    }
+});
 router.get("/:id", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
