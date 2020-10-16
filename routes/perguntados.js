@@ -21,6 +21,21 @@ router.get("/:id", async function (req, res) {
         });
     });
 
+    if(result.length > 0){
+        var busca = result.map((value, index)=>{
+            return value.dataValues;
+        })
+
+        var sort = Math.floor((Math.random()*(busca.length)));
+        return res.status(200).json({
+            success:"true",
+            message:"Pergunta selecionada",
+            data: busca[sort],
+        })
+    }
+
     console.log(result);
+
+
 });
 module.exports = router;

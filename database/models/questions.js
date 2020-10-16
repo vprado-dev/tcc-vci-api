@@ -23,6 +23,16 @@ const Questions = db.define('questions', {
       type: Sequelize.JSON,
       allowNull: false
     },
+    totem_fk:{
+      type: Sequelize.INTEGER,
+      allowNull: true, 
+      references: {
+        model:{
+          tableName: 'perguntados',
+        },
+        key:'idtoten'
+      }
+    },
     created_at: {
       type: Sequelize.DATE,
       allowNull: false,
