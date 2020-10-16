@@ -1,14 +1,14 @@
 "use strict";
 const nomes = [
-    "Política de Qualidade",
     "Ordem de Produção",
-    "Sobra de Processo",
-    "Procedimentos da Qualidade",
-    "Instrução Operacional",
-    "Ação Corretiva",
-    "Controle de Qualidade",
-    "Identificação e Rastreabialidade",
+    "Política de Qualidade",
     "Indicadores de Qualidade",
+    "Identificação e Rastreabialidade",
+    "Controle de Qualidade",
+    "Ação Corretiva",
+    "Instrução Operacional",
+    "Procedimentos da Qualidade",
+    "Sobra de Processo",
 ];
 const totens = nomes.map((value, index) => {
     return {
