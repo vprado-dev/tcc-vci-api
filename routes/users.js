@@ -68,8 +68,8 @@ router.get("/employee", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
-                admin: false,
-            },
+                admin: false
+            }
         });
         console.log(result);
         if (result.length > 0) {
@@ -80,7 +80,7 @@ router.get("/employee", jsonParser, async function (req, res, next) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
 });
@@ -112,12 +112,7 @@ router.post("/", async function (req, res, next) {
         const dados = req.body;
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
-<<<<<<< HEAD
-        dados.nickname =
-            dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
-=======
         dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
->>>>>>> Ajustes em relação aos status e para dar merge com o da gra
         dados.nome += " " + dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
@@ -229,16 +224,14 @@ router.put("/update-user", async function (req, res, next) {
         nickname_user: dados.nickname,
         email_user: dados.email
     };
-    User.update(itens, { where: { iduser: dados.iduser } }).then(
-        (result) => {
-            if (result[0] === 1) {
-                res.json({
-                    success: true,
-                    message: "Usuário alterado com sucesso"
-                });
-            }
+    User.update(itens, { where: { iduser: dados.iduser } }).then((result) => {
+        if (result[0] === 1) {
+            res.json({
+                success: true,
+                message: "Usuário alterado com sucesso"
+            });
         }
-    );
+    });
 });
 
 module.exports = router;
