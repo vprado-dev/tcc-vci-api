@@ -113,8 +113,8 @@ router.post("/", async function (req, res, next) {
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname =
-            dados.nome.charAt(0).toUpperCase() + " " + dados.sobrenome;
-        dados.nome += dados.sobrenome;
+            dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
+        dados.nome += " " + dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
             // tratar melhor todos os erros, esta com muita brecha ainda
@@ -130,8 +130,12 @@ router.post("/", async function (req, res, next) {
             sendMail(
                 res,
                 dados.email,
-                "Bem Vindo ao VCI Treinamentos",
-                "Olá, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem vindo"
+                "Bem-vindo ao VCI Treinamentos!",
+                `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo!<br /><br />
+                 Seus dados para login são:<br/>
+                 Nome de usuário: ${dados.nickname}<br/>
+                 Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
+                 Atenciosamente, Equipe VCI.`
             );
             res.json({
                 success: true,
@@ -208,6 +212,25 @@ router.put("/check-user/:email", async function (req, res, next) {
                 res.json({
                     success: true,
                     message: "Usuário checado com sucesso"
+                });
+            }
+        }
+    );
+});
+
+router.put("/update-user", async function (req, res, next) {
+    const dados = req.params;
+    let itens = {
+        name_user: dados.nome,
+        nickname_user: dados.nickname,
+        email_user: dados.email
+    };
+    User.update(itens, { where: { iduser: dados.iduser } }).then(
+        (result) => {
+            if (result[0] === 1) {
+                res.json({
+                    success: true,
+                    message: "Usuário alterado com sucesso"
                 });
             }
         }
