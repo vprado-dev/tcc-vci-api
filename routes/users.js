@@ -7,8 +7,8 @@ const { route } = require("./login");
 const router = express.Router();
 const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
+const authToken = require("../src/authToken");
 router.use(jsonParser);
-
 router.get("/all", async function (req, res) {
     try {
         User.findAll()
@@ -21,7 +21,7 @@ router.get("/all", async function (req, res) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
 });
@@ -29,8 +29,8 @@ router.get("/ids", async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
-                iduser: req.body.ids,
-            },
+                iduser: req.body.ids
+            }
         });
         if (result.length > 0) {
             res.json(result);
@@ -40,7 +40,7 @@ router.get("/ids", async function (req, res, next) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
 });
@@ -48,8 +48,8 @@ router.get("/admins", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
-                admin: true,
-            },
+                admin: true
+            }
         });
         console.log(result);
         if (result.length > 0) {
@@ -60,7 +60,7 @@ router.get("/admins", jsonParser, async function (req, res, next) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
 });
@@ -68,8 +68,8 @@ router.get("/:id", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
-                iduser: req.params.id,
-            },
+                iduser: req.params.id
+            }
         });
         if (result.length > 0) {
             res.json(result);
@@ -79,16 +79,21 @@ router.get("/:id", jsonParser, async function (req, res, next) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
+});
+router.post(async function (req, res, next) {
+    console.log(req);
+    return;
 });
 router.post("/", async function (req, res, next) {
     try {
         const dados = req.body;
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
-        dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
+        dados.nickname =
+            dados.nome.charAt(0).toUpperCase() + " " + dados.sobrenome;
         dados.nome += dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
@@ -98,7 +103,7 @@ router.post("/", async function (req, res, next) {
             email_user: dados.email,
             cpf_user: dados.cpf,
             password_user: dados.password,
-            admin: dados.admin,
+            admin: dados.admin
         });
         if (result !== null) {
             console.log("Enviando email");
@@ -110,7 +115,7 @@ router.post("/", async function (req, res, next) {
             );
             res.json({
                 success: true,
-                result: result,
+                result: result
             });
         } else {
             throw new Error("Erro ao criar usuário");
@@ -119,7 +124,7 @@ router.post("/", async function (req, res, next) {
         res.json({
             sucess: false,
             message: e.message,
-            error: e.parent,
+            error: e.parent
         });
     }
 });
@@ -131,8 +136,8 @@ router.post("/check-valid-email", async function (req, res, next) {
     var dados = req.body;
     var result = await User.findOne({
         where: {
-            email_user: dados.email,
-        },
+            email_user: dados.email
+        }
     });
     sendMail(
         res,
@@ -141,17 +146,48 @@ router.post("/check-valid-email", async function (req, res, next) {
         "Olá, sua senha do treinamento da empresa VCI é :" + result.cpf_user
     ); // pode melhorar com um html
 });
+router.post("/save-image-user", authToken, async function (req, res, next) {
+    let dados = req.body;
+    jwt.verify(dados.tk, process.env.STRING_TOKEN_ENCODE, function (
+        err,
+        decoded
+    ) {
+        User.update(
+            {
+                path_image: `assets/images/users/${decoded.iduser}.jpg`
+            },
+            {
+                where: {
+                    iduser: decoded.iduser
+                }
+            }
+        ).then(function (result) {
+            if (result[0] === 1) {
+                res.status(200).json({
+                    success: true,
+                    message: "Imagem alterada com sucesso.",
+                    data: result
+                });
+            } else {
+                res.status(400).json({
+                    success: false,
+                    message: "Erro ao alterar a imagem, tente novamente"
+                });
+            }
+        });
+    });
+});
 router.put("/check-user/:email", async function (req, res, next) {
     const dados = req.params;
     let itens = {
-        checked_user: true,
+        checked_user: true
     };
     User.update(itens, { where: { email_user: dados.email } }).then(
         (result) => {
             if (result[0] === 1) {
                 res.json({
                     success: true,
-                    message: "Usuário checado com sucesso",
+                    message: "Usuário checado com sucesso"
                 });
             }
         }

@@ -37,7 +37,7 @@ try {
 } catch (error) {
     console.error("Unable to connect to the database:", error);
 }
-
+app.use(bodyParser.json());
 app.get("/", async function (req, res) {});
 //Rota login
 app.use("/login", require("./routes/login"));
@@ -46,7 +46,7 @@ app.use("/ranking", require("./routes/ranking"));
 app.use("/game", require("./routes/game"));
 app.use((error, req, res, next) => {
     res.status(error.httpStatusCode).json({
-        error,
+        error
     });
 });
 

@@ -36,6 +36,8 @@ const users = [...Array(10)].map((user) => {
         password_user: bcrypt.hashSync(gerarCpf(), salt),
         cpf_user: gerarCpf(),
         admin: false,
+        checked_user: false,
+        path_image: "",
         created_at: new Date(),
         updated_at: new Date(),
     };

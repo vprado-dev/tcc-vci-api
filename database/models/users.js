@@ -40,6 +40,11 @@ const Users = db.define(
             allowNull: false,
             defaultValue: false,
         },
+        path_image: {
+            type: Sequelize.STRING,
+            allowNull: false,
+            defaultValue: "",
+        },
         created_at: {
             type: Sequelize.DATE,
             allowNull: false,
