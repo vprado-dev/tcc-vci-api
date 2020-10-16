@@ -63,7 +63,7 @@ router.post("/teste-token", jsonParser, async function (req, res) {
             decoded
         ) {
             if (err) {
-                return res.json({
+                return res.status(401).json({
                     success: "false",
                     message: "Falha ao tentar autenticar o token!"
                 });

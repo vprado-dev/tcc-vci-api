@@ -112,8 +112,12 @@ router.post("/", async function (req, res, next) {
         const dados = req.body;
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
+<<<<<<< HEAD
         dados.nickname =
             dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
+=======
+        dados.nickname = dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
+>>>>>>> Ajustes em relação aos status e para dar merge com o da gra
         dados.nome += " " + dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
