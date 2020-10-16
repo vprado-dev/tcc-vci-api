@@ -44,7 +44,8 @@ router.post("/", jsonParser, async function (req, res) {
             res.status(200).json({
                 success: "true",
                 message: "Usuário conectado com sucesso.",
-                data: busca[0]
+                admin: busca[0].admin,
+                token: busca[0].token
             });
         }
     } else {
@@ -69,7 +70,8 @@ router.post("/teste-token", jsonParser, async function (req, res) {
             } else {
                 req.decoded = decoded;
                 res.json({
-                    success: "true"
+                    success: "true",
+                    decoded: decoded
                 });
             }
         });
