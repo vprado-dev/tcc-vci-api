@@ -113,7 +113,7 @@ router.post("/", async function (req, res, next) {
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname =
-            dados.nome.charAt(0).toUpperCase() + dados.sobrenome;
+            dados.nome.charAt(0).toUpperCase() + dados.sobrenome.split(' ')[0];
         dados.nome += " " + dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
@@ -209,9 +209,19 @@ router.put("/check-user/:email", async function (req, res, next) {
     User.update(itens, { where: { email_user: dados.email } }).then(
         (result) => {
             if (result[0] === 1) {
+                sendMail(
+                    res,
+                    dados.email,
+                    "Verificação de cadastro!",
+                    `Olá ${dados.nome}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
+                     Relembrando, seus dados para login são:<br/>
+                     Nome de usuário: ${dados.nickname}<br/>
+                     Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
+                     Atenciosamente, Equipe VCI.`
+                );
                 res.json({
                     success: true,
-                    message: "Usuário checado com sucesso"
+                    message: "Usuário verificado com sucesso"
                 });
             }
         }
@@ -222,15 +232,27 @@ router.put("/update-user", async function (req, res, next) {
     const dados = req.params;
     let itens = {
         name_user: dados.nome,
-        nickname_user: dados.nickname,
-        email_user: dados.email
+        email_user: dados.email,
+        nickname_user: dados.nome.charAt(0).toUpperCase() + dados.nome.split(' ')[1]
     };
     User.update(itens, { where: { iduser: dados.iduser } }).then(
         (result) => {
             if (result[0] === 1) {
+                sendMail(
+                    res,
+                    dados.email,
+                    "Alteração de dados",
+                    `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
+                     Seus dados atuais são:<br/>
+                     Nome de usuário: ${dados.nickname}<br/>
+                     Nome: ${dados.nome}<br/>
+                     E-mail: ${dados.email}<br/>
+                     Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
+                     Atenciosamente, Equipe VCI.`
+                );
                 res.json({
                     success: true,
-                    message: "Usuário alterado com sucesso"
+                    message: "Dados alterados com sucesso!"
                 });
             }
         }

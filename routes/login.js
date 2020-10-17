@@ -36,6 +36,7 @@ router.post("/", jsonParser, async function (req, res) {
                 );
                 return {
                     admin: value.admin,
+                    checked_user: value.checked_user,
                     token: token
                 };
             }
@@ -45,6 +46,7 @@ router.post("/", jsonParser, async function (req, res) {
                 success: "true",
                 message: "Usuário conectado com sucesso.",
                 admin: busca[0].admin,
+                checked_user: busca[0].checked_user,
                 token: busca[0].token
             });
         }
