@@ -255,7 +255,6 @@ router.put("/update-user", async function (req, res, next) {
                     message: "Dados alterados com sucesso!"
                 });
             }
-        }
     });
 });
 
