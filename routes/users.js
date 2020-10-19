@@ -3,7 +3,6 @@ const bodyParser = require("body-parser");
 const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { route } = require("./login");
 const router = express.Router();
 const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
@@ -51,7 +50,6 @@ router.get("/admins", jsonParser, async function (req, res, next) {
                 admin: true
             }
         });
-        console.log(result);
         if (result.length > 0) {
             res.json(result);
         } else {
@@ -71,7 +69,6 @@ router.get("/employee", jsonParser, async function (req, res, next) {
                 admin: false,
             },
         });
-        console.log(result);
         if (result.length > 0) {
             res.json(result);
         } else {
@@ -131,7 +128,8 @@ router.post("/", async function (req, res, next) {
                 res,
                 dados.email,
                 "Bem-vindo ao VCI Treinamentos!",
-                `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo!<br /><br />
+                `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo!Aguarde um novo e-mail certificando a verificação
+                 da sua conta para conseguir realizar seu login!<br /><br />
                  Seus dados para login são:<br/>
                  Nome de usuário: ${dados.nickname}<br/>
                  Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
@@ -229,13 +227,17 @@ router.put("/check-user/:email", async function (req, res, next) {
 });
 
 router.put("/update-user", async function (req, res, next) {
-    const dados = req.params;
+    const dados = req.body;
     let itens = {
         name_user: dados.nome,
         email_user: dados.email,
         nickname_user: dados.nome.charAt(0).toUpperCase() + dados.nome.split(' ')[1]
     };
-    User.update(itens, { where: { iduser: dados.iduser } }).then(
+    const oldUser = await User.findOne({ where: {iduser: dados.id} });
+    if(oldUser.name_user === itens.name_user && oldUser.email_user === itens.email_user){
+        return;
+    }
+    User.update(itens, { where: { iduser: dados.id } }).then(
         (result) => {
             if (result[0] === 1) {
                 sendMail(
@@ -244,14 +246,22 @@ router.put("/update-user", async function (req, res, next) {
                     "Alteração de dados",
                     `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
                      Seus dados atuais são:<br/>
-                     Nome de usuário: ${dados.nickname}<br/>
+                     Nome de usuário: ${itens.nickname_user}<br/>
                      Nome: ${dados.nome}<br/>
                      E-mail: ${dados.email}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
                      Atenciosamente, Equipe VCI.`
                 );
+                var token = jwt.sign(
+                    value.dataValues,
+                    process.env.STRING_TOKEN_ENCODE,
+                    {
+                        expiresIn: "10h"
+                    }
+                );
                 res.json({
                     success: true,
+                    //token,
                     message: "Dados alterados com sucesso!"
                 });
             }
