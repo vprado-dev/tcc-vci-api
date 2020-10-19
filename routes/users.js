@@ -66,8 +66,8 @@ router.get("/employee", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
             where: {
-                admin: false,
-            },
+                admin: false
+            }
         });
         if (result.length > 0) {
             res.json(result);
@@ -77,7 +77,7 @@ router.get("/employee", jsonParser, async function (req, res, next) {
     } catch (e) {
         res.json({
             success: false,
-            message: e.message,
+            message: e.message
         });
     }
 });
@@ -266,7 +266,7 @@ router.put("/update-user", async function (req, res, next) {
                 });
             }
         }
-    );
+    });
 });
 
 module.exports = router;

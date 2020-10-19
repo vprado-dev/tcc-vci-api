@@ -44,6 +44,7 @@ app.use("/login", require("./routes/login"));
 app.use("/users", require("./routes/users"));
 app.use("/ranking", require("./routes/ranking"));
 app.use("/game", require("./routes/game"));
+app.use("/perguntados", require('./routes/perguntados'));
 app.use((error, req, res, next) => {
     res.status(error.httpStatusCode).json({
         error
