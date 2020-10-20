@@ -113,7 +113,7 @@ router.post("/", async function (req, res, next) {
         const salt = bcrypt.genSaltSync(12);
         dados.password = bcrypt.hashSync(dados.cpf, salt);
         dados.nickname =
-            dados.nome.charAt(0).toUpperCase() + dados.sobrenome.split(' ')[0];
+            dados.nome.charAt(0).toUpperCase() + dados.sobrenome.split(" ")[0];
         dados.nome += " " + dados.sobrenome;
         dados.admin ? "" : (dados.admin = false);
         const result = await User.create({
@@ -128,7 +128,6 @@ router.post("/", async function (req, res, next) {
         if (result !== null) {
             console.log("Enviando email");
             sendMail(
-                res,
                 dados.email,
                 "Bem-vindo ao VCI Treinamentos!",
                 `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo!<br /><br />
@@ -154,21 +153,39 @@ router.post("/", async function (req, res, next) {
 });
 router.post("/email", async function (req, res) {
     var dados = req.body;
-    sendMail(res, dados.destinatario, dados.assunto, dados.texto);
+    sendMail(dados.destinatario, dados.assunto, dados.texto);
 });
-router.post("/check-valid-email", async function (req, res, next) {
+router.post("/forgot-password", async function (req, res, next) {
     var dados = req.body;
     var result = await User.findOne({
         where: {
             email_user: dados.email
         }
     });
-    sendMail(
-        res,
-        dados.email,
-        "Esqueci minha senha",
-        "Olá, sua senha do treinamento da empresa VCI é :" + result.cpf_user
-    ); // pode melhorar com um html
+    if (result != null) {
+        const response = await sendMail(
+            dados.email,
+            "Esqueci minha senha",
+            "Olá, sua senha do treinamento da empresa VCI é : " +
+                result.cpf_user
+        ); // pode melhorar com um html
+        if (response) {
+            res.status(200).json({
+                success: true,
+                message: "E-mail enviado com sucesso"
+            });
+        } else {
+            res.status(400).json({
+                success: false,
+                message: "Erro ao enviar e-mail"
+            });
+        }
+    } else {
+        res.status(404).json({
+            success: false,
+            message: "E-mail não encontrado em nossa base de dados"
+        });
+    }
 });
 router.post("/save-image-user", authToken, async function (req, res, next) {
     let dados = req.body;
@@ -210,7 +227,6 @@ router.put("/check-user/:email", async function (req, res, next) {
         (result) => {
             if (result[0] === 1) {
                 sendMail(
-                    res,
                     dados.email,
                     "Verificação de cadastro!",
                     `Olá ${dados.nome}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
@@ -227,34 +243,32 @@ router.put("/check-user/:email", async function (req, res, next) {
         }
     );
 });
-
 router.put("/update-user", async function (req, res, next) {
     const dados = req.params;
     let itens = {
         name_user: dados.nome,
         email_user: dados.email,
-        nickname_user: dados.nome.charAt(0).toUpperCase() + dados.nome.split(' ')[1]
+        nickname_user:
+            dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
     };
-    User.update(itens, { where: { iduser: dados.iduser } }).then(
-        (result) => {
-            if (result[0] === 1) {
-                sendMail(
-                    res,
-                    dados.email,
-                    "Alteração de dados",
-                    `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
+    User.update(itens, { where: { iduser: dados.iduser } }).then((result) => {
+        if (result[0] === 1) {
+            sendMail(
+                dados.email,
+                "Alteração de dados",
+                `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
                      Seus dados atuais são:<br/>
                      Nome de usuário: ${dados.nickname}<br/>
                      Nome: ${dados.nome}<br/>
                      E-mail: ${dados.email}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
                      Atenciosamente, Equipe VCI.`
-                );
-                res.json({
-                    success: true,
-                    message: "Dados alterados com sucesso!"
-                });
-            }
+            );
+            res.json({
+                success: true,
+                message: "Dados alterados com sucesso!"
+            });
+        }
     });
 });
 
