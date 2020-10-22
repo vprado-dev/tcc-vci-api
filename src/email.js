@@ -14,7 +14,9 @@ async function sendMail(destinatario, assunto, texto) {
         subject: assunto,
         html: texto
     };
-    var email = await transporter.sendMail(mailOptions);
+    var email = await transporter
+        .sendMail(mailOptions)
+        .catch((err) => console.log(err));
     return email;
 }
 module.exports = sendMail;
