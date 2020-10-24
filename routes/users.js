@@ -25,6 +25,26 @@ router.get("/all", async function (req, res) {
         });
     }
 });
+
+router.get("/checked-users", async function (req, res) {
+    try {
+        User.findAll({
+            order: ["checked_user"],
+        })
+            .then(function (resultados) {
+                res.json(resultados);
+            })
+            .catch(function () {
+                throw new Error("Erro ao procurar todos os usuários");
+            });
+    } catch (e) {
+        res.json({
+            success: false,
+            message: e.message
+        });
+    }
+});
+
 router.get("/ids", async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -219,17 +239,19 @@ router.post("/save-image-user", authToken, async function (req, res, next) {
     });
 });
 router.put("/check-user/:email", async function (req, res, next) {
-    const dados = req.params;
+    const email = req.params.email;
+    const dados = req.body;
+    console.log(dados);
     let itens = {
         checked_user: true
     };
-    User.update(itens, { where: { email_user: dados.email } }).then(
+    User.update(itens, { where: { email_user: email } }).then(
         (result) => {
             if (result[0] === 1) {
                 sendMail(
-                    dados.email,
+                    email,
                     "Verificação de cadastro!",
-                    `Olá ${dados.nome}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
+                    `Olá ${dados.name}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
                      Relembrando, seus dados para login são:<br/>
                      Nome de usuário: ${dados.nickname}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
@@ -238,6 +260,30 @@ router.put("/check-user/:email", async function (req, res, next) {
                 res.json({
                     success: true,
                     message: "Usuário verificado com sucesso"
+                });
+            }
+        }
+    );
+});
+router.put("/promote-admin/:email", async function (req, res, next) {
+    const email = req.params.email;
+    const dados = req.body;
+    console.log(dados);
+    let itens = {
+        admin: true
+    };
+    User.update(itens, { where: { email_user: email } }).then(
+        (result) => {
+            if (result[0] === 1) {
+                sendMail(
+                    email,
+                    "Promovido a administrador!",
+                    `Olá ${dados.name}, você foi promovido a administrador! Em seu próximo login, você já terá acesso a páginas exclusivas!<br /><br /> 
+                     Atenciosamente, Equipe VCI.`
+                );
+                res.json({
+                    success: true,
+                    message: "Usuário promovido com sucesso"
                 });
             }
         }
