@@ -7,7 +7,10 @@ module.exports = {
     database: "d239l4doba6dom",
     host: "ec2-3-233-236-188.compute-1.amazonaws.com",
     port: 5432,
-    dialect: "postgres"
+    dialect: "postgres",
+    define: {
+        timestamps: true
+    }
 };
 
 // new Sequelize
