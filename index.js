@@ -44,13 +44,13 @@ app.use("/login", require("./routes/login"));
 app.use("/users", require("./routes/users"));
 app.use("/ranking", require("./routes/ranking"));
 app.use("/game", require("./routes/game"));
-app.use("/perguntados", require('./routes/perguntados'));
+app.use("/perguntados", require("./routes/perguntados"));
 app.use((error, req, res, next) => {
     res.status(error.httpStatusCode).json({
         error
     });
 });
-
-app.listen(3333, function () {
-    console.log("Servidor ativo na porta 3333");
+var port = process.env.PORT || 8080;
+app.listen(port, function () {
+    console.log("Servidor ativo na porta " + port);
 });
