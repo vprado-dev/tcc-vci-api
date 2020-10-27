@@ -2,9 +2,11 @@ var nodemailer = require("nodemailer");
 
 async function sendMail(destinatario, assunto, texto) {
     var transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com",
+        port: 465,
         service: "gmail",
+        secure: true,
         auth: {
-            type: "OAuth2",
             user: "treinamentos.vci@gmail.com",
             pass: "tccvci123"
         }
