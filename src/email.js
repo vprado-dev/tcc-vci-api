@@ -4,6 +4,7 @@ async function sendMail(destinatario, assunto, texto) {
     var transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
+            type: "OAuth2",
             user: "treinamentos.vci@gmail.com",
             pass: "tccvci123"
         }
