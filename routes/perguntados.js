@@ -2,7 +2,24 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Question = require('../database/models/questions');
+const Perguntados = require('../database/models/perguntados');
 
+router.get("/all", async function (req, res) {
+    try {
+        Perguntados.findAll()
+            .then(function (resultados) {
+                res.json(resultados);
+            })
+            .catch(function () {
+                throw new Error("Erro ao procurar todas as categorias");
+            });
+    } catch (e) {
+        res.json({
+            success: false,
+            message: e.message
+        });
+    }
+});
 
 router.get("/:id", async function (req, res) {
     console.log(req.params);
