@@ -43,6 +43,7 @@ io.on("connection", (socket) => {
             createRoom(players[players.length-1]);
         }else{
            addPlayer(players[players.length-1]);
+           io.emit('ready', [salas[salas.length-1].players[0].id, salas[salas.length-1].players[1].id]);
         }
     }else{
         createRoom(players[players.length-1]);
