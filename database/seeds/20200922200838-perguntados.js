@@ -8,14 +8,14 @@ const nomes = [
     "Ação Corretiva",
     "Instrução Operacional",
     "Procedimentos da Qualidade",
-    "Sobra de Processo",
+    "Sobra de Processo"
 ];
 const totens = nomes.map((value, index) => {
     return {
-        name_toten : value,
-        path_image : `assets/images/jogo_10/image_00${index}`,
-        created_at : new Date(),
-        updated_at : new Date()
+        name_toten: value,
+        path_image: `assets/images/jogo_10/image_00${index}`,
+        created_at: new Date(),
+        updated_at: new Date()
     };
 });
 module.exports = {
@@ -25,5 +25,5 @@ module.exports = {
 
     down: async (queryInterface, Sequelize) => {
         return queryInterface.bulkDelete("perguntados", null, {});
-    },
+    }
 };

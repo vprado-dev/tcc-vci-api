@@ -39,16 +39,16 @@ const users = [...Array(10)].map((user) => {
         checked_user: false,
         path_image: "",
         created_at: new Date(),
-        updated_at: new Date(),
+        updated_at: new Date()
     };
 });
 
 module.exports = {
     up: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkInsert("users", users, {});
+        return await queryInterface.bulkInsert("users", users, {});
     },
 
     down: async (queryInterface, Sequelize) => {
-        return queryInterface.bulkDelete("users", null, {});
-    },
+        return await queryInterface.bulkDelete("users", null, {});
+    }
 };

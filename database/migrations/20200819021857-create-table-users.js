@@ -7,54 +7,53 @@ module.exports = {
                 autoIncrement: true,
                 type: Sequelize.INTEGER,
                 allowNull: false,
-                primaryKey: true,
+                primaryKey: true
             },
             name_user: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: false
             },
             nickname_user: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: false
             },
             email_user: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                unique: true,
+                unique: true
             },
             cpf_user: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: false
             },
             password_user: {
                 type: Sequelize.STRING,
-                allowNull: false,
+                allowNull: false
             },
             admin: {
                 type: Sequelize.BOOLEAN,
-                allowNull: false,
+                allowNull: false
             },
             checked_user: {
                 type: Sequelize.BOOLEAN,
                 allowNull: false,
-                defaultValue: false,
+                defaultValue: false
             },
             path_image: {
                 type: Sequelize.STRING,
                 allowNull: false,
-                defaultValue: "",
+                defaultValue: ""
             },
             created_at: {
                 type: Sequelize.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
+                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
             },
             updated_at: {
                 type: Sequelize.DATE,
                 allowNull: false,
-                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP"),
-            },
+                defaultValue: Sequelize.literal("CURRENT_TIMESTAMP")
+            }
         }),
-    down: async (queryInterface, Sequelize) =>
-        queryInterface.dropTable("users"),
+    down: async (queryInterface, Sequelize) => queryInterface.dropTable("users")
 };

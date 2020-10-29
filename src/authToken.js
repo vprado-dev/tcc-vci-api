@@ -24,7 +24,7 @@ module.exports = function (req, res, next) {
     } else {
         res.status(400).json({
             success: false,
-            message: "Requisição invalida"
+            message: "Requisição invalida, usuário não autenticado"
         });
     }
 };

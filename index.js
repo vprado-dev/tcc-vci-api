@@ -51,7 +51,7 @@ app.use((error, req, res, next) => {
         error
     });
 });
-var port = 3333;
+var port = process.env.PORT;
 app.listen(port, function () {
     console.log("Servidor ativo na porta " + port);
 });
