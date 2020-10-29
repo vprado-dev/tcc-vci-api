@@ -45,12 +45,13 @@ app.use("/users", require("./routes/users"));
 app.use("/ranking", require("./routes/ranking"));
 app.use("/game", require("./routes/game"));
 app.use("/perguntados", require("./routes/perguntados"));
+app.use("/quiz", require("./routes/quiz"));
 app.use((error, req, res, next) => {
     res.status(error.httpStatusCode).json({
         error
     });
 });
-var port = process.env.PORT || 8080;
+var port = 3333;
 app.listen(port, function () {
     console.log("Servidor ativo na porta " + port);
 });
