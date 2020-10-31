@@ -13,7 +13,7 @@ const authTk = require("../src/authToken");
 router.get("/get-questions", async (req, res) => {
     var numeros = [];
     while (numeros.length < 5) {
-        let sort = Math.floor(Math.random() * 20);
+        let sort = Math.floor(Math.random() * 19+1);
         if (!numeros.includes(sort)) {
             numeros.push(sort);
         }
@@ -27,7 +27,7 @@ router.get("/get-questions", async (req, res) => {
         )
         .catch((err) => res.json({ success: false, code: err.code }));
 });
-router.post("/check-question", authTk, async (req, res) => {
+router.post("/check-question", async (req, res) => {
     var dados = req.body;
     const result = await db
         .query(
@@ -38,11 +38,13 @@ router.post("/check-question", authTk, async (req, res) => {
         });
     var respostas = Object.entries(result[0][0].json_question.respostas);
     var resultado = respostas.map((value, index) => {
-        if (value[1].pergunta.trim() === dados.resposta.trim()) {
-            return value[1].certa;
+        if(value[1].pergunta.trim() === dados.resposta.trim() && value[1].certa === 'true') {
+            return 'true'
+        } else {
+            return 'false'
         }
     });
-    if (resultado[0] === "true") {
+    if (resultado.includes("true")) {
         res.json({
             success: true,
             resultado: "Questão certa",
