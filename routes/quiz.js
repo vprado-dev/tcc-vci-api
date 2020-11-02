@@ -47,11 +47,11 @@ router.post("/check-question", async (req, res) => {
     if (resultado.includes("true")) {
         res.json({
             success: true,
-            resultado: "Questão certa",
+            resultado: "Parabéns!! Alternativa Correta!",
             points: result[0][0].points
         });
     } else {
-        res.json({ success: true, resultado: "Questão errada" });
+        res.json({ success: true, resultado: "Alternativa Incorreta!" });
     }
 });
 
