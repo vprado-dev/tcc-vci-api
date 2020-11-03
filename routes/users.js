@@ -8,6 +8,7 @@ const router = express.Router();
 const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
 const authToken = require("../src/authToken");
+const multer = require("multer");
 router.use(jsonParser);
 router.get("/all", async function (req, res) {
     try {
@@ -29,7 +30,7 @@ router.get("/all", async function (req, res) {
 router.get("/checked-users", async function (req, res) {
     try {
         User.findAll({
-            order: ["checked_user"],
+            order: ["checked_user"]
         })
             .then(function (resultados) {
                 res.json(resultados);
@@ -71,7 +72,7 @@ router.get("/admins", jsonParser, async function (req, res, next) {
                 admin: true
             }
         });
-        console.log(result);
+        //console.log(result);
         if (result.length > 0) {
             res.json(result);
         } else {
@@ -91,7 +92,7 @@ router.get("/employee", jsonParser, async function (req, res, next) {
                 admin: false
             }
         });
-        console.log(result);
+        //console.log(result);
         if (result.length > 0) {
             res.json(result);
         } else {
@@ -124,7 +125,7 @@ router.get("/:id", jsonParser, async function (req, res, next) {
     }
 });
 router.post(async function (req, res, next) {
-    console.log(req);
+    //console.log(req);
     return;
 });
 router.post("/", async function (req, res, next) {
@@ -208,34 +209,24 @@ router.post("/forgot-password", async function (req, res, next) {
     }
 });
 router.post("/save-image-user", authToken, async function (req, res, next) {
+    console.log("to tentando");
     let dados = req.body;
-    jwt.verify(dados.tk, process.env.STRING_TOKEN_ENCODE, function (
-        err,
-        decoded
-    ) {
-        User.update(
-            {
-                path_image: `assets/images/users/${decoded.iduser}.jpg`
-            },
-            {
-                where: {
-                    iduser: decoded.iduser
-                }
-            }
-        ).then(function (result) {
-            if (result[0] === 1) {
-                res.status(200).json({
-                    success: true,
-                    message: "Imagem alterada com sucesso.",
-                    data: result
-                });
-            } else {
-                res.status(400).json({
-                    success: false,
-                    message: "Erro ao alterar a imagem, tente novamente"
-                });
-            }
-        });
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            cb(null, "public");
+        },
+        filename: function (req, file, cb) {
+            cb(null, Date.now() + "-" + file.originalname);
+        }
+    });
+    var upload = multer({ storage: storage }).single("file");
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            return res.status(500).json(err);
+        } else if (err) {
+            return res.status(500).json(err);
+        }
+        return res.status(200).send(req.file);
     });
 });
 router.put("/check-user/:email", async function (req, res, next) {
@@ -245,25 +236,23 @@ router.put("/check-user/:email", async function (req, res, next) {
     let itens = {
         checked_user: true
     };
-    User.update(itens, { where: { email_user: email } }).then(
-        (result) => {
-            if (result[0] === 1) {
-                sendMail(
-                    email,
-                    "Verificação de cadastro!",
-                    `Olá ${dados.name}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
+    User.update(itens, { where: { email_user: email } }).then((result) => {
+        if (result[0] === 1) {
+            sendMail(
+                email,
+                "Verificação de cadastro!",
+                `Olá ${dados.name}, a verificação da sua conta foi realizada! Agora você já pode se logar em nosso sistema!<br /><br />
                      Relembrando, seus dados para login são:<br/>
                      Nome de usuário: ${dados.nickname}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
                      Atenciosamente, Equipe VCI.`
-                );
-                res.json({
-                    success: true,
-                    message: "Usuário verificado com sucesso"
-                });
-            }
+            );
+            res.json({
+                success: true,
+                message: "Usuário verificado com sucesso"
+            });
         }
-    );
+    });
 });
 router.put("/promote-admin/:email", async function (req, res, next) {
     const email = req.params.email;
@@ -272,22 +261,20 @@ router.put("/promote-admin/:email", async function (req, res, next) {
     let itens = {
         admin: true
     };
-    User.update(itens, { where: { email_user: email } }).then(
-        (result) => {
-            if (result[0] === 1) {
-                sendMail(
-                    email,
-                    "Promovido a administrador!",
-                    `Olá ${dados.name}, você foi promovido a administrador! Em seu próximo login, você já terá acesso a páginas exclusivas!<br /><br /> 
+    User.update(itens, { where: { email_user: email } }).then((result) => {
+        if (result[0] === 1) {
+            sendMail(
+                email,
+                "Promovido a administrador!",
+                `Olá ${dados.name}, você foi promovido a administrador! Em seu próximo login, você já terá acesso a páginas exclusivas!<br /><br /> 
                      Atenciosamente, Equipe VCI.`
-                );
-                res.json({
-                    success: true,
-                    message: "Usuário promovido com sucesso"
-                });
-            }
+            );
+            res.json({
+                success: true,
+                message: "Usuário promovido com sucesso"
+            });
         }
-    );
+    });
 });
 router.put("/update-user", async function (req, res, next) {
     const dados = req.params;
