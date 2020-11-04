@@ -32,20 +32,26 @@ function addPlayer(player){
 
 
 io.on("connection", (socket) => {
+    let playerNick = socket.handshake.query['nickName'];
     console.log("Novo usuario conectado.");
     players.push({
         id : socket.client.id,
+        nick_name : playerNick,
         totens : [],
         available : false
     });
     if(salas.length != 0){
         if(salas[salas.length-1].players.length == 2 ){
+            players[players.length-1].available = true;
             createRoom(players[players.length-1]);
+            
         }else{
            addPlayer(players[players.length-1]);
-           io.emit('ready', [salas[salas.length-1].players[0].id, salas[salas.length-1].players[1].id]);
+           console.log(salas[salas.length-1].players);
+           io.emit('ready', [salas[salas.length-1].players[0], salas[salas.length-1].players[1]]);
         }
     }else{
+        players[players.length-1].available = true;
         createRoom(players[players.length-1]);
     }
    
@@ -64,6 +70,7 @@ io.on("connection", (socket) => {
                     }
                 }
             }
+            io.emit("swap", players);
         }else{
             console.log("Apenas um jogador conectado");
         }
