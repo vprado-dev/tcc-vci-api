@@ -89,28 +89,4 @@ router.get("/pergunta/:id", async function(req, res){
     }
 });
 
-router.post("/teste-token", jsonParser, async function (req, res) {
-    const token = req.body.token;
-    if (token) {
-        jwt.verify(token, process.env.STRING_TOKEN_ENCODE, function (
-            err,
-            decoded
-        ) {
-            if (err) {
-                return res.status(401).json({
-                    success: "false",
-                    message: "Falha ao tentar autenticar o token!"
-                });
-            } else {
-                req.decoded = decoded;
-                res.json({
-                    success: "true",
-                    decoded: decoded
-                });
-            }
-        });
-    }
-});
-
-
 module.exports = router;
