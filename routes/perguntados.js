@@ -3,6 +3,10 @@ const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Question = require('../database/models/questions');
 const Perguntados = require('../database/models/perguntados');
+const bodyParser = require("body-parser");
+const jsonParser = bodyParser.json();
+
+
 
 router.get("/all", async function (req, res) {
     try {
