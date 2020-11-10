@@ -1,14 +1,6 @@
 "use strict";
 let name_game = [
     "Quiz",
-    "Caça Palavras",
-    "Associação",
-    "Ordem da Produção",
-    "Forca",
-    "Memória",
-    "Ache o erro",
-    "Análise de dados",
-    "Corrida de Empilhadeira",
     "Perguntados",
 ];
 const games = name_game.map((value, index) => {

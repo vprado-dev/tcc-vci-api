@@ -5,33 +5,36 @@ const questions = [
             enunciado:
                 "Seu produto/serviço deve procurar sempre atender as necessidades do:",
             respostas: {
-                q1: { pergunta: "gestor da produção", certa: "false" },
-                q2: { pergunta: "cliente", certa: "true" },
-                q3: { pergunta: "líder da produção", certa: "false" },
-                q4: { pergunta: "dono da empresa", certa: "false" }
-            }
+                q1: { pergunta: "Gestor da produção", certa: false },
+                q2: { pergunta: "Cliente", certa: true },
+                q3: { pergunta: "Líder da produção", certa: false },
+                q4: { pergunta: "Dono da empresa", certa: false }
+            },
+            key: "01"
         }
     },
     {
         json_question: {
             enunciado: "É considerado um tipo de capacitação:",
             respostas: {
-                q1: { pergunta: "curso", certa: "true" },
-                q2: { pergunta: "produção de um pedido", certa: "false" },
-                q3: { pergunta: "prestação de um serviço", certa: "false" },
-                q4: { pergunta: "manutenção de equipe", certa: "false" }
-            }
+                q1: { pergunta: "Curso", certa: true },
+                q2: { pergunta: "Produção de um pedido", certa: false },
+                q3: { pergunta: "Prestação de um serviço", certa: false },
+                q4: { pergunta: "Manutenção de equipe", certa: false }
+            },
+            key: "02"
         }
     },
     {
         json_question: {
             enunciado: "Em quais locais podemos encontrar a PQ:",
             respostas: {
-                q1: { pergunta: "quadros de aviso / placas", certa: "false" },
-                q2: { pergunta: "quadros de aviso / site", certa: "true" },
-                q3: { pergunta: "quadros de aviso / email", certa: "false" },
-                q4: { pergunta: "email / site", certa: "false" }
-            }
+                q1: { pergunta: "Quadros de aviso / placas", certa: false },
+                q2: { pergunta: "Quadros de aviso / site", certa: true },
+                q3: { pergunta: "Quadros de aviso / email", certa: false },
+                q4: { pergunta: "Email / site", certa: false }
+            },
+            key: "03"
         }
     },
     {
@@ -40,22 +43,23 @@ const questions = [
             respostas: {
                 q1: {
                     pergunta:
-                        "compromisso da empresa com as partes interessadas",
-                    certa: "true"
+                        "Compromisso da empresa com as partes interessadas",
+                    certa: true
                 },
                 q2: {
-                    pergunta: "compromisso da empresa com os clientes",
-                    certa: "false"
+                    pergunta: "Compromisso da empresa com os clientes",
+                    certa: false
                 },
                 q3: {
-                    pergunta: "compromisso das partes interessadas com todos",
-                    certa: "false"
+                    pergunta: "Compromisso das partes interessadas com todos",
+                    certa: false
                 },
                 q4: {
-                    pergunta: "compromisso da empresa com os colaboradores",
-                    certa: "false"
+                    pergunta: "Compromisso da empresa com os colaboradores",
+                    certa: false
                 }
-            }
+            },
+            key: "04"
         }
     },
     {
@@ -65,25 +69,26 @@ const questions = [
             respostas: {
                 q1: {
                     pergunta:
-                        "satisfação do cliente/ requisitos aplicáveis/ treinamento / melhoria contínua",
-                    certa: "false"
+                        "Satisfação do cliente/ requisitos aplicáveis/ treinamento / melhoria contínua",
+                    certa: false
                 },
                 q2: {
                     pergunta:
-                        "satisfação do cliente/ requisitos clientes/ treinamento / melhoria contínua",
-                    certa: "false"
+                        "Satisfação do cliente/ requisitos clientes/ treinamento / melhoria contínua",
+                    certa: false
                 },
                 q3: {
                     pergunta:
-                        "satisfação do cliente/ requisitos clientes/ capacitação / melhoria contínua",
-                    certa: "false"
+                        "Satisfação do cliente/ requisitos clientes/ capacitação / melhoria contínua",
+                    certa: false
                 },
                 q4: {
                     pergunta:
-                        "satisfação do cliente/ requisitos aplicáveis/ capacitação / melhoria contínua",
-                    certa: "true"
+                        "Satisfação do cliente/ requisitos aplicáveis/ capacitação / melhoria contínua",
+                    certa: true
                 }
-            }
+            },
+            key: "05"
         }
     },
     {
@@ -91,11 +96,12 @@ const questions = [
             enunciado:
                 "A Política da Qualidade da VCI Brasil é ___________ atender às necessidades dos seus clientes e dos requisitos aplicáveis, atuando no mercado de: materiais para embalagens, contendo ou não inibidores voláteis de corrosão, fluidos industriais, resinas, solventes e soluções anticorrosivas, através da capacitação de seus colaboradores e da melhoria contínua dos seus processos.",
             respostas: {
-                q1: { pergunta: "procurar ", certa: "true" },
-                q2: { pergunta: "sempre", certa: "false" },
-                q3: { pergunta: "tentar ", certa: "false" },
-                q4: { pergunta: "obrigatoriamente", certa: "false" }
-            }
+                q1: { pergunta: "Procurar ", certa: true },
+                q2: { pergunta: "Sempre", certa: false },
+                q3: { pergunta: "Tentar ", certa: false },
+                q4: { pergunta: "Obrigatoriamente", certa: false }
+            },
+            key: "06"
         }
     },
     {
@@ -103,36 +109,38 @@ const questions = [
             enunciado: "São consideradas partes interessadas na PQ:",
             respostas: {
                 q1: {
-                    pergunta: "somente elementos que afetam a organização",
-                    certa: "false"
+                    pergunta: "Somente elementos que afetam a organização",
+                    certa: false
                 },
                 q2: {
                     pergunta:
-                        "somente elementos que são afetados pela organização",
-                    certa: "false"
+                        "Somente elementos que são afetados pela organização",
+                    certa: false
                 },
                 q3: {
                     pergunta:
-                        "todos elementos que afetam e são afetados pela organização",
-                    certa: "true"
+                        "Todos elementos que afetam e são afetados pela organização",
+                    certa: true
                 },
                 q4: {
                     pergunta:
-                        "todos elementos que não afetam mas são afetados pela organização",
-                    certa: "false"
+                        "Todos elementos que não afetam mas são afetados pela organização",
+                    certa: false
                 }
-            }
+            },
+            key: "07"
         }
     },
     {
         json_question: {
             enunciado: "É considerada como uma melhoría contínua dentro da PQ:",
             respostas: {
-                q1: { pergunta: "cursos", certa: "false" },
-                q2: { pergunta: "manutenções corretivas", certa: "false" },
-                q3: { pergunta: "ações corretivas", certa: "true" },
-                q4: { pergunta: "manutenções preventivas", certa: "false" }
-            }
+                q1: { pergunta: "Cursos", certa: false },
+                q2: { pergunta: "Manutenções corretivas", certa: false },
+                q3: { pergunta: "Ações corretivas", certa: true },
+                q4: { pergunta: "Manutenções preventivas", certa: false }
+            },
+            key: "08"
         }
     },
     {
@@ -140,27 +148,29 @@ const questions = [
             enunciado: "Não é considerada uma melhoria contínua dentro da PQ:",
             respostas: {
                 q1: {
-                    pergunta: "investimento em equipamentos",
-                    certa: "false"
+                    pergunta: "Investimento em equipamentos",
+                    certa: false
                 },
-                q2: { pergunta: "ações corretivas", certa: "false" },
+                q2: { pergunta: "Ações corretivas", certa: false },
                 q3: {
-                    pergunta: "desenvolvimento de novos produtos",
-                    certa: "false"
+                    pergunta: "Desenvolvimento de novos produtos",
+                    certa: false
                 },
-                q4: { pergunta: "treinamentos", certa: "true" }
-            }
+                q4: { pergunta: "Treinamentos", certa: true }
+            },
+            key: "09"
         }
     },
     {
         json_question: {
             enunciado: "A política da qualidade da VCI Brasil visa capacitar:",
             respostas: {
-                q1: { pergunta: "clientes ", certa: "false" },
-                q2: { pergunta: "colaboradores", certa: "true" },
-                q3: { pergunta: "clientes externos ", certa: "false" },
-                q4: { pergunta: "provedores externos", certa: "false" }
-            }
+                q1: { pergunta: "Clientes ", certa: false },
+                q2: { pergunta: "Colaboradores", certa: true },
+                q3: { pergunta: "Clientes externos ", certa: false },
+                q4: { pergunta: "Provedores externos", certa: false }
+            },
+            key: "10"
         }
     },
     {
@@ -169,24 +179,25 @@ const questions = [
             respostas: {
                 q1: {
                     pergunta:
-                        "condições básicas que devem ser colocadas em prática pela organização",
-                    certa: "true"
+                        "Condições básicas que devem ser colocadas em prática pela organização",
+                    certa: true
                 },
                 q2: {
                     pergunta:
-                        "compromisso da empresa com as partes interessadas",
-                    certa: "false"
+                        "Compromisso da empresa com as partes interessadas",
+                    certa: false
                 },
                 q3: {
                     pergunta:
-                        "pessoas/intituições/grupos/orgãos governamentais/etc...",
-                    certa: "false"
+                        "Pessoas/intituições/grupos/orgãos governamentais/etc...",
+                    certa: false
                 },
                 q4: {
-                    pergunta: "capacitação dos colaboradores",
-                    certa: "false"
+                    pergunta: "Capacitação dos colaboradores",
+                    certa: false
                 }
-            }
+            },
+            key: "11"
         }
     },
     {
@@ -195,19 +206,20 @@ const questions = [
             respostas: {
                 q1: {
                     pergunta:
-                        "embalagens contendo ou não inibidores voláteis de corrosão...",
-                    certa: "true"
+                        "Embalagens contendo ou não inibidores voláteis de corrosão...",
+                    certa: true
                 },
-                q2: { pergunta: "insumos anticorrosivos...", certa: "false" },
+                q2: { pergunta: "Insumos anticorrosivos...", certa: false },
                 q3: {
-                    pergunta: "sprays e óleos anticorrosão...",
-                    certa: "false"
+                    pergunta: "Sprays e óleos anticorrosão...",
+                    certa: false
                 },
                 q4: {
-                    pergunta: "embalagens contendo inibidores de corrosão",
-                    certa: "false"
+                    pergunta: "Embalagens contendo inibidores de corrosão",
+                    certa: false
                 }
-            }
+            },
+            key: "12"
         }
     },
     {
@@ -215,17 +227,18 @@ const questions = [
             enunciado: "Não faz parte da Política da Qualidade da VCI Brasil:",
             respostas: {
                 q1: {
-                    pergunta: "capacitação dos colaboradores",
-                    certa: "false"
+                    pergunta: "Capacitação dos colaboradores",
+                    certa: false
                 },
-                q2: { pergunta: "melhoria contínua", certa: "false" },
-                q3: { pergunta: "capacitação contínua", certa: "true" },
+                q2: { pergunta: "Melhoria contínua", certa: false },
+                q3: { pergunta: "Capacitação contínua", certa: true },
                 q4: {
                     pergunta:
-                        "procurar atender as necessidades de seus clientes",
-                    certa: "false"
+                        "Procurar atender as necessidades de seus clientes",
+                    certa: false
                 }
-            }
+            },
+            key: "13"
         }
     },
     {
@@ -233,22 +246,24 @@ const questions = [
             enunciado:
                 "Qual a parte interessada mais importante da Política da Qualidade:",
             respostas: {
-                q1: { pergunta: "cliente ", certa: "true" },
-                q2: { pergunta: "colaboradores ", certa: "false" },
-                q3: { pergunta: "clientes externos ", certa: "false" },
-                q4: { pergunta: "provedores externos", certa: "false" }
-            }
+                q1: { pergunta: "Cliente ", certa: true },
+                q2: { pergunta: "Colaboradores ", certa: false },
+                q3: { pergunta: "Clientes externos ", certa: false },
+                q4: { pergunta: "Provedores externos", certa: false }
+            },
+            key: "14"
         }
     },
     {
         json_question: {
             enunciado: "Não é considerado um requisito aplicável dentro da PQ:",
             respostas: {
-                q1: { pergunta: "ações corretivas ", certa: "true" },
-                q2: { pergunta: "descrição de cargo ", certa: "false" },
-                q3: { pergunta: "licenças ", certa: "false" },
-                q4: { pergunta: "normas de conduta", certa: "false" }
-            }
+                q1: { pergunta: "Ações corretivas ", certa: true },
+                q2: { pergunta: "Descrição de cargo ", certa: false },
+                q3: { pergunta: "Licenças ", certa: false },
+                q4: { pergunta: "Normas de conduta", certa: false }
+            },
+            key: "15"
         }
     },
     {
@@ -256,17 +271,18 @@ const questions = [
             enunciado:
                 "A capacitação consiste na atualização, complementação e/ou aplicação das:",
             respostas: {
-                q1: { pergunta: "competências ou habilidades", certa: "true" },
+                q1: { pergunta: "Competências ou habilidades", certa: true },
                 q2: {
-                    pergunta: "competências ou capacitação",
-                    certa: "false"
+                    pergunta: "Competências ou capacitação",
+                    certa: false
                 },
                 q3: {
-                    pergunta: "necessidades ou habilidades",
-                    certa: "false"
+                    pergunta: "Necessidades ou habilidades",
+                    certa: false
                 },
-                q4: { pergunta: "necessidades ou capacitação", certa: "false" }
-            }
+                q4: { pergunta: "Necessidades ou capacitação", certa: false }
+            },
+            key: "16"
         }
     },
     {
@@ -274,25 +290,27 @@ const questions = [
             enunciado:
                 "A PQ da VCI Brasil procura atender as necessidades dos:",
             respostas: {
-                q1: { pergunta: "clientes externos", certa: "false" },
-                q2: { pergunta: "clientes internos", certa: "false" },
+                q1: { pergunta: "Clientes externos", certa: false },
+                q2: { pergunta: "Clientes internos", certa: false },
                 q3: {
-                    pergunta: "clientes internos e externos",
-                    certa: "false"
+                    pergunta: "Clientes internos e externos",
+                    certa: false
                 },
-                q4: { pergunta: "clientes", certa: "true" }
-            }
+                q4: { pergunta: "Clientes", certa: true }
+            },
+            key: "17"
         }
     },
     {
         json_question: {
             enunciado: "A política da qualidade deve ser:",
             respostas: {
-                q1: { pergunta: "decorada ", certa: "false" },
-                q2: { pergunta: "gravada ", certa: "false" },
-                q3: { pergunta: "copiada ", certa: "false" },
-                q4: { pergunta: "entendida", certa: "true" }
-            }
+                q1: { pergunta: "Decorada ", certa: false },
+                q2: { pergunta: "Gravada ", certa: false },
+                q3: { pergunta: "Copiada ", certa: false },
+                q4: { pergunta: "Entendida", certa: true }
+            },
+            key: "18"
         }
     },
     {
@@ -300,28 +318,30 @@ const questions = [
             enunciado:
                 "Pode ser considerada uma forma de capacitação dentro do SGQ:",
             respostas: {
-                q1: { pergunta: "treinamento para cliente", certa: "false" },
+                q1: { pergunta: "Treinamento para cliente", certa: false },
                 q2: {
-                    pergunta: "palestras e workshops para clientes",
-                    certa: "false"
+                    pergunta: "Palestras e workshops para clientes",
+                    certa: false
                 },
-                q3: { pergunta: "palestras internas", certa: "true" },
+                q3: { pergunta: "Palestras internas", certa: true },
                 q4: {
-                    pergunta: "treinamentos para provedores externos",
-                    certa: "false"
+                    pergunta: "Treinamentos para provedores externos",
+                    certa: false
                 }
-            }
+            },
+            key: "19"
         }
     },
     {
         json_question: {
             enunciado: "Não é considerado um requisito aplicável:",
             respostas: {
-                q1: { pergunta: "descrição de função", certa: "true" },
-                q2: { pergunta: "pedido de venda", certa: "false" },
-                q3: { pergunta: "pedido de compra", certa: "false" },
-                q4: { pergunta: "ordem de produção", certa: "false" }
-            }
+                q1: { pergunta: "Descrição de função", certa: true },
+                q2: { pergunta: "Pedido de venda", certa: false },
+                q3: { pergunta: "Pedido de compra", certa: false },
+                q4: { pergunta: "Ordem de produção", certa: false }
+            },
+            key: "20"
         }
     }
 ];
