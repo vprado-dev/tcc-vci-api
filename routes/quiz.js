@@ -3,6 +3,7 @@ const Game = require("../database/models/game");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Quiz = require("../database/models/quiz");
+const Ranking = require("../database/models/ranking");
 const { db } = require("../config/objetos");
 const authTk = require("../src/authToken");
 /*
@@ -103,7 +104,7 @@ router.post("/check-question", async (req, res) => {
     var resultado = respostas.map((value, index) => {
         if (
             value[1].pergunta.trim() === dados.resposta.trim() &&
-            value[1].certa === "true"
+            value[1].certa === true
         ) {
             return "true";
         } else {
@@ -120,5 +121,27 @@ router.post("/check-question", async (req, res) => {
         res.json({ success: true, resultado: "Alternativa Incorreta!" });
     }
 });
-
+router.put("/insert-ranking", async (req, res) => {
+   
+        Ranking.bulkCreate(
+            req.body.questions.map((q) => {
+                return {
+                    idgame: 1,
+                    iduser: 1,
+                    points: 20,
+                    time:80,
+                };
+            })
+        )
+        .then((result) => {
+            res.json({
+                success: true,
+                result: result,
+                message: "Ranking inserido!"
+            });
+        })
+        .catch(() => {
+            throw new Error("Erro ao inserir ranking");
+        });
+});
 module.exports = router;
