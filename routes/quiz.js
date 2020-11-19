@@ -64,7 +64,7 @@ router.put("/update-questions", async (req, res) => {
                     req.body.questions.map((q) => {
                         return {
                             json_question: q,
-                            points: 20
+                            points: 20,
                         };
                     })
                 )
