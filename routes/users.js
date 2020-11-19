@@ -9,6 +9,7 @@ const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
 const authToken = require("../src/authToken");
 const multer = require("multer");
+const multerConfig = require("../config/multer");
 router.use(jsonParser);
 router.get("/all", async function (req, res) {
     try {
@@ -26,7 +27,6 @@ router.get("/all", async function (req, res) {
         });
     }
 });
-
 router.get("/checked-users", async function (req, res) {
     try {
         User.findAll({
@@ -45,7 +45,6 @@ router.get("/checked-users", async function (req, res) {
         });
     }
 });
-
 router.get("/ids", async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -276,15 +275,19 @@ router.put("/promote-admin/:email", async function (req, res, next) {
         }
     });
 });
-router.put("/update-user", async function (req, res, next) {
-    const dados = req.params;
+router.put("/update-user", multer(multerConfig).single("file"), async function (
+    req,
+    res,
+    next
+) {
+    var dados = req.body;
     let itens = {
         name_user: dados.nome,
         email_user: dados.email,
         nickname_user:
             dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
     };
-    User.update(itens, { where: { iduser: dados.iduser } }).then((result) => {
+    User.update(itens, { where: { iduser: dados.id } }).then((result) => {
         if (result[0] === 1) {
             sendMail(
                 dados.email,

@@ -47,7 +47,7 @@ app.use("/game", require("./routes/game"));
 app.use("/perguntados", require("./routes/perguntados"));
 app.use("/quiz", require("./routes/quiz"));
 app.use((error, req, res, next) => {
-    res.status(error.httpStatusCode).json({
+    res.json({
         error
     });
 });
