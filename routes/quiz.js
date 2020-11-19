@@ -6,6 +6,8 @@ const Quiz = require("../database/models/quiz");
 const Ranking = require("../database/models/ranking");
 const { db } = require("../config/objetos");
 const authTk = require("../src/authToken");
+const bodyParser = require("body-parser");
+const jsonParser = bodyParser.json();
 /*
     Pegar 5 perguntas aleatórias,
     Validar as respostas e retornar os pontos
@@ -122,26 +124,19 @@ router.post("/check-question", async (req, res) => {
     }
 });
 router.put("/insert-ranking", async (req, res) => {
-   
-        Ranking.bulkCreate(
-            req.body.questions.map((q) => {
-                return {
-                    idgame: 1,
-                    iduser: 1,
-                    points: 20,
-                    time:80,
-                };
-            })
-        )
-        .then((result) => {
-            res.json({
-                success: true,
-                result: result,
-                message: "Ranking inserido!"
-            });
-        })
-        .catch(() => {
-            throw new Error("Erro ao inserir ranking");
+    try{
+        const dados = req.body;
+        const points = dados.points;
+        const time = dados.tempo;
+        const iduser = dados.user;
+        console.log(dados);
+        db.query(`insert into ranking(idgame, iduser, points, time) values(1,${iduser},${points},${time});
+        `)
+        .catch(function (err) {
+            console.log(err);
         });
+    } catch (e) {
+       console.log(e);
+    }
 });
 module.exports = router;
