@@ -3,8 +3,11 @@ const Game = require("../database/models/game");
 const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Quiz = require("../database/models/quiz");
+const Ranking = require("../database/models/ranking");
 const { db } = require("../config/objetos");
 const authTk = require("../src/authToken");
+const bodyParser = require("body-parser");
+const jsonParser = bodyParser.json();
 /*
     Pegar 5 perguntas aleatórias,
     Validar as respostas e retornar os pontos
@@ -64,7 +67,7 @@ router.put("/update-questions", async (req, res) => {
                     req.body.questions.map((q) => {
                         return {
                             json_question: q,
-                            points: 20
+                            points: 20,
                         };
                     })
                 )
@@ -103,7 +106,7 @@ router.post("/check-question", async (req, res) => {
     var resultado = respostas.map((value, index) => {
         if (
             value[1].pergunta.trim() === dados.resposta.trim() &&
-            value[1].certa === "true"
+            value[1].certa === true
         ) {
             return "true";
         } else {
@@ -120,5 +123,20 @@ router.post("/check-question", async (req, res) => {
         res.json({ success: true, resultado: "Alternativa Incorreta!" });
     }
 });
-
+router.put("/insert-ranking", async (req, res) => {
+    try{
+        const dados = req.body;
+        const points = dados.points;
+        const time = dados.tempo;
+        const iduser = dados.user;
+        console.log(dados);
+        db.query(`insert into ranking(idgame, iduser, points, time) values(1,${iduser},${points},${time});
+        `)
+        .catch(function (err) {
+            console.log(err);
+        });
+    } catch (e) {
+       console.log(e);
+    }
+});
 module.exports = router;
