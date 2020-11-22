@@ -169,6 +169,33 @@ router.get("/pergunta/:id", async function (req, res) {
     }
 });
 
-
+router.post("/nameTotem", async function (req ,res){
+    const idTotem = req.body.idTotem;
+    const result = await Perguntados.findAll({
+        attributes: [
+            'name_toten'
+        ],
+        where:{
+            idtoten : idTotem
+        }
+    }).catch(function (err) {
+        res.json({
+            success: "false",
+            message: "Erro!"
+        });
+    });
+    try{
+        if (result.length > 0) {
+            res.status(200).json({
+                success : "true",
+                message : "Totem Selecionado",
+                data : result[0]
+            });
+        }
+    }catch(E){
+        console.error(E);
+    }
+   
+});
 
 module.exports = router;

@@ -13,7 +13,7 @@ const nomes = [
 const totens = nomes.map((value, index) => {
     return {
         name_toten: value,
-        path_image: `assets/images/jogo_10/image_00${index}`,
+        path_image: `../../../assets/images/jogo_10/image_00${index*2}`,
         created_at: new Date(),
         updated_at: new Date()
     };

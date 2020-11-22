@@ -38,6 +38,7 @@ io.on("connection", (socket) => {
         nick_name: playerNick,
         aux_totens: [],
         totem: [],
+        pontos: 0,
         available: false
     });
     if (salas.length != 0) {
@@ -83,28 +84,40 @@ io.on("connection", (socket) => {
 
 
     socket.on("acertou", (args) =>{
-        console.log(args);
         var room_index = findRoombyPID(args.id);
         if(salas[room_index].players.length > 1){
             for (var i = 0; i < salas[room_index].players.length; i++) {
                 if (salas[room_index].players[i].id === args.id) {
-                    salas[room_index].players[i].aux_totens.push(args.totem);
-                    salas[room_index].players[i].aux_totens.sort(sortfunction);
-                    var aux = salas[room_index].players[i].aux_totens[0];
-                    var count = 0;
-                    for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
-                        if(aux == salas[room_index].players[i].aux_totens[j]){
-                            count++;
-                            if(count == 3){
-                                salas[room_index].players[i].totem.push(aux);
-                                console.log(salas[room_index].players[i].totem);
-                                io.emit("conquistaTotem", salas[room_index].players);
-                            }
-                        }else{
-                            aux = aux_totens[j];
-                            count = 0;
-                            j--;
-                        }
+                    salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
+                    console.log(salas[room_index].players[i]);
+                    // salas[room_index].players[i].pontos += 1;
+                    // console.log(salas[room_index].players[i].pontos);
+                    // salas[room_index].players[i].aux_totens.push(args.totem);
+                    // salas[room_index].players[i].aux_totens.sort(sortfunction);
+                    // var aux = salas[room_index].players[i].aux_totens[0];
+                    // var count = 0;
+                    // // console.log(salas[room_index].players[i].aux_totens);
+                    // for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
+                    //     if(aux == salas[room_index].players[i].aux_totens[j]){
+                    //         count++;
+                    //         if(count == 3){
+                    //            if( salas[room_index].players[i].totem.includes(aux) == false){
+                    //                 salas[room_index].players[i].totem.push(aux);
+                    //                 salas[room_index].players[i].totem.sort(sortfunction);
+                    //                 // console.log("totem-----------------");
+                    //                 // console.log(salas[room_index].players[i].totem);
+                    //                 io.emit("conquistaTotem", salas[room_index].players);
+                    //            }
+                    //         }
+                    //     }else{
+                    //         aux = salas[room_index].players[i].aux_totens[j];
+                    //         count = 0;
+                    //         j--;
+                    //     }
+                    // }
+
+                    if(salas[room_index].players[i].totem.length === 9){
+                        io.emit("winner", salas[room_index].players);
                     }
                 }
             }
