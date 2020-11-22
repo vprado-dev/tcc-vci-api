@@ -18,7 +18,7 @@ var players = [];
 //- socket.on para 'Escutar' as requisicoes
 //- socket.emit para mandar requisicoes
 function createRoom(player) {
-    console.log(player);
+    // console.log(player);
     salas[salas.length] = {
         num_sala: salas.length,
         id_sala: Math.random() * 1000,
@@ -49,7 +49,7 @@ io.on("connection", (socket) => {
             createRoom(players[players.length - 1]);
         } else {
             addPlayer(players[players.length - 1]);
-            console.log(salas[salas.length - 1].players);
+            // console.log(salas[salas.length - 1].players);
             io.emit("ready", [
                 salas[salas.length - 1].players[0],
                 salas[salas.length - 1].players[1]
@@ -89,7 +89,7 @@ io.on("connection", (socket) => {
         if(salas[room_index].players.length > 1){
             for (var i = 0; i < salas[room_index].players.length; i++) {
                 if (salas[room_index].players[i].id === args.id) {
-                    // salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
+                    salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
                     // console.log(salas[room_index].players[i]);
                     salas[room_index].players[i].pontos += 1;
                     salas[room_index].players[i].time += args.time;
@@ -97,15 +97,15 @@ io.on("connection", (socket) => {
                     salas[room_index].players[i].aux_totens.sort(sortfunction);
                     var aux = salas[room_index].players[i].aux_totens[0];
                     var count = 0;
-                    console.log(salas[room_index].players[i].aux_totens);
+                    // console.log(salas[room_index].players[i].aux_totens);
                     for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
                         if(aux == salas[room_index].players[i].aux_totens[j]){
                             count++;
                             if(count == 3){
                                if( salas[room_index].players[i].totem.includes(aux) == false){
                                     salas[room_index].players[i].totem.push(aux);
-                                    console.log("totem-----------------");
-                                    console.log(salas[room_index].players[i].totem);
+                                    // console.log("totem-----------------");
+                                    // console.log(salas[room_index].players[i].totem);
                                     if(salas[room_index].players[i].totem.length === 9){
                                         io.emit("winner", salas[room_index].players);
                                     }else{
