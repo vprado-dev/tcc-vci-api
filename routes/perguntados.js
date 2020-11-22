@@ -205,7 +205,8 @@ router.post("/insert-ranking", async function(req, res){
         const time = dados.time;
         const iduser = dados.idUser;
         console.log(dados)
-        db.query(`insert into ranking(idgame, iduser, points, time) values(2 , ${iduser}, ${points}, ${time});
+        db.query(`INSERT INTO ranking(idgame, iduser, points, time)
+         VALUES (2 , ${iduser}, ${points}, ${time});
         `)
         .catch(function (err) {
             console.log(err);

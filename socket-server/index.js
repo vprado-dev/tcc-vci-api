@@ -97,15 +97,15 @@ io.on("connection", (socket) => {
                     salas[room_index].players[i].aux_totens.sort(sortfunction);
                     var aux = salas[room_index].players[i].aux_totens[0];
                     var count = 0;
-                    // console.log(salas[room_index].players[i].aux_totens);
+                    console.log(salas[room_index].players[i].aux_totens);
                     for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
                         if(aux == salas[room_index].players[i].aux_totens[j]){
                             count++;
                             if(count == 3){
                                if( salas[room_index].players[i].totem.includes(aux) == false){
                                     salas[room_index].players[i].totem.push(aux);
-                                    // console.log("totem-----------------");
-                                    // console.log(salas[room_index].players[i].totem);
+                                    console.log("totem-----------------");
+                                    console.log(salas[room_index].players[i].totem);
                                     if(salas[room_index].players[i].totem.length === 9){
                                         io.emit("winner", salas[room_index].players);
                                     }else{
@@ -119,6 +119,7 @@ io.on("connection", (socket) => {
                             j--;
                         }
                     }
+                    //tirar isso aq dps
                     if(salas[room_index].players[i].totem.length === 9){
                         io.emit("winner", salas[room_index].players);
                     }
@@ -146,6 +147,20 @@ io.on("connection", (socket) => {
         } else {
             console.log("Apenas um jogador conectado");
         }
+    });
+
+    socket.on("winner-room", (args)=>{
+        var room_index = findRoombyPID(args);
+        salas[room_index] = null;
+        for(var  i = room_index; i < salas.length; i++){
+            try{
+                salas[i] = salas[i+1];
+            }catch(e){
+                console.error(e);
+            }
+        }
+        salas.length--;
+        console.log(salas);
     });
 
     socket.on("disconnect", () => {
