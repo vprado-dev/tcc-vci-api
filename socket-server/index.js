@@ -38,9 +38,11 @@ io.on("connection", (socket) => {
         nick_name: playerNick,
         aux_totens: [],
         totem: [],
+        time : 0,
         pontos: 0,
         available: false
     });
+    
     if (salas.length != 0) {
         if (salas[salas.length - 1].players.length == 2) {
             players[players.length - 1].available = true;
@@ -58,7 +60,6 @@ io.on("connection", (socket) => {
         createRoom(players[players.length - 1]);
     }
 
-    console.log(players);
 
     function findRoombyPID(PID) {
         for (var i = 0; i < salas.length; i++) {
@@ -89,33 +90,35 @@ io.on("connection", (socket) => {
             for (var i = 0; i < salas[room_index].players.length; i++) {
                 if (salas[room_index].players[i].id === args.id) {
                     salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
-                    console.log(salas[room_index].players[i]);
-                    // salas[room_index].players[i].pontos += 1;
-                    // console.log(salas[room_index].players[i].pontos);
-                    // salas[room_index].players[i].aux_totens.push(args.totem);
-                    // salas[room_index].players[i].aux_totens.sort(sortfunction);
-                    // var aux = salas[room_index].players[i].aux_totens[0];
-                    // var count = 0;
-                    // // console.log(salas[room_index].players[i].aux_totens);
-                    // for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
-                    //     if(aux == salas[room_index].players[i].aux_totens[j]){
-                    //         count++;
-                    //         if(count == 3){
-                    //            if( salas[room_index].players[i].totem.includes(aux) == false){
-                    //                 salas[room_index].players[i].totem.push(aux);
-                    //                 salas[room_index].players[i].totem.sort(sortfunction);
-                    //                 // console.log("totem-----------------");
-                    //                 // console.log(salas[room_index].players[i].totem);
-                    //                 io.emit("conquistaTotem", salas[room_index].players);
-                    //            }
-                    //         }
-                    //     }else{
-                    //         aux = salas[room_index].players[i].aux_totens[j];
-                    //         count = 0;
-                    //         j--;
-                    //     }
-                    // }
-
+                    // console.log(salas[room_index].players[i]);
+                    salas[room_index].players[i].pontos += 1;
+                    salas[room_index].players[i].time += args.time;
+                    salas[room_index].players[i].aux_totens.push(args.totem);
+                    salas[room_index].players[i].aux_totens.sort(sortfunction);
+                    var aux = salas[room_index].players[i].aux_totens[0];
+                    var count = 0;
+                    // console.log(salas[room_index].players[i].aux_totens);
+                    for(var j = 0; j< salas[room_index].players[i].aux_totens.length; j++){
+                        if(aux == salas[room_index].players[i].aux_totens[j]){
+                            count++;
+                            if(count == 3){
+                               if( salas[room_index].players[i].totem.includes(aux) == false){
+                                    salas[room_index].players[i].totem.push(aux);
+                                    // console.log("totem-----------------");
+                                    // console.log(salas[room_index].players[i].totem);
+                                    if(salas[room_index].players[i].totem.length === 9){
+                                        io.emit("winner", salas[room_index].players);
+                                    }else{
+                                        io.emit("conquistaTotem", salas[room_index].players);
+                                    }
+                               }
+                            }
+                        }else{
+                            aux = salas[room_index].players[i].aux_totens[j];
+                            count = 0;
+                            j--;
+                        }
+                    }
                     if(salas[room_index].players[i].totem.length === 9){
                         io.emit("winner", salas[room_index].players);
                     }
@@ -126,12 +129,12 @@ io.on("connection", (socket) => {
     });
 
     socket.on("errou", (args) => {
-        var room_index = findRoombyPID(args);
-
+        var room_index = findRoombyPID(args.id);
         if (salas[room_index].players.length > 1) {
             for (var i = 0; i < salas[room_index].players.length; i++) {
-                if (salas[room_index].players[i].id === args) {
+                if (salas[room_index].players[i].id === args.id) {
                     salas[room_index].players[i].available = false;
+                    salas[room_index].players[i].time += args.time;
                     if (!i) {
                         salas[room_index].players[1].available = true;
                     } else {

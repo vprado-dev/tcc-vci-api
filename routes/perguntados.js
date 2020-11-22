@@ -169,7 +169,7 @@ router.get("/pergunta/:id", async function (req, res) {
     }
 });
 
-router.post("/nameTotem", async function (req ,res){
+router.post("/name-totem", async function (req ,res){
     const idTotem = req.body.idTotem;
     const result = await Perguntados.findAll({
         attributes: [
@@ -197,5 +197,26 @@ router.post("/nameTotem", async function (req ,res){
     }
    
 });
+
+router.post("/insert-ranking", async function(req, res){
+    try{
+        const dados = req.body;
+        const points = dados.points;
+        const time = dados.time;
+        const iduser = dados.idUser;
+        console.log(dados)
+        db.query(`insert into ranking(idgame, iduser, points, time) values(2 , ${iduser}, ${points}, ${time});
+        `)
+        .catch(function (err) {
+            console.log(err);
+        });
+        res.status(200).json({
+            success : "true",
+            message : "foi",
+        });
+    } catch (e) {
+       console.log(e);
+    }
+})
 
 module.exports = router;
