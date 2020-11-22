@@ -89,7 +89,7 @@ io.on("connection", (socket) => {
         if(salas[room_index].players.length > 1){
             for (var i = 0; i < salas[room_index].players.length; i++) {
                 if (salas[room_index].players[i].id === args.id) {
-                    salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
+                    // salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
                     // console.log(salas[room_index].players[i]);
                     salas[room_index].players[i].pontos += 1;
                     salas[room_index].players[i].time += args.time;
