@@ -104,4 +104,3 @@ dist
 .tern-port
 
 #Retirando esse arquivo para deixar apenas na api
-public/uploads
