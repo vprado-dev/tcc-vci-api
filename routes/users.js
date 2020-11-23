@@ -275,37 +275,38 @@ router.put("/promote-admin/:email", async function (req, res, next) {
         }
     });
 });
-router.put("/update-user", multer(multerConfig).single("file"), async function (
-    req,
-    res,
-    next
-) {
-    var dados = req.body;
-    let itens = {
-        name_user: dados.nome,
-        email_user: dados.email,
-        nickname_user:
-            dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
-    };
-    User.update(itens, { where: { iduser: dados.id } }).then((result) => {
-        if (result[0] === 1) {
-            sendMail(
-                dados.email,
-                "Alteração de dados",
-                `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
+router.put(
+    "/update-user",
+    multer(multerConfig).single("file"),
+    async function (req, res, next) {
+        var dados = req.body;
+        console.log(req.file);
+        let itens = {
+            name_user: dados.nome,
+            email_user: dados.email,
+            nickname_user:
+                dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
+        };
+        User.update(itens, { where: { iduser: dados.id } }).then((result) => {
+            if (result[0] === 1) {
+                sendMail(
+                    dados.email,
+                    "Alteração de dados",
+                    `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
                      Seus dados atuais são:<br/>
                      Nome de usuário: ${dados.nickname}<br/>
                      Nome: ${dados.nome}<br/>
                      E-mail: ${dados.email}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
                      Atenciosamente, Equipe VCI.`
-            );
-            res.json({
-                success: true,
-                message: "Dados alterados com sucesso!"
-            });
-        }
-    });
-});
+                );
+                res.json({
+                    success: true,
+                    message: "Dados alterados com sucesso!"
+                });
+            }
+        });
+    }
+);
 
 module.exports = router;
