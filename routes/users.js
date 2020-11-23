@@ -11,6 +11,7 @@ const authToken = require("../src/authToken");
 const multer = require("multer");
 const multerConfig = require("../config/multer");
 router.use(jsonParser);
+
 router.get("/all", async function (req, res) {
     try {
         User.findAll()
@@ -45,6 +46,7 @@ router.get("/checked-users", async function (req, res) {
         });
     }
 });
+
 router.get("/ids", async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -64,6 +66,7 @@ router.get("/ids", async function (req, res, next) {
         });
     }
 });
+
 router.get("/admins", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -84,6 +87,7 @@ router.get("/admins", jsonParser, async function (req, res, next) {
         });
     }
 });
+
 router.get("/employee", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -104,6 +108,7 @@ router.get("/employee", jsonParser, async function (req, res, next) {
         });
     }
 });
+
 router.get("/:id", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -123,10 +128,12 @@ router.get("/:id", jsonParser, async function (req, res, next) {
         });
     }
 });
+
 router.post(async function (req, res, next) {
     //console.log(req);
     return;
 });
+
 router.post("/", async function (req, res, next) {
     try {
         const dados = req.body;
@@ -171,10 +178,12 @@ router.post("/", async function (req, res, next) {
         });
     }
 });
+
 router.post("/email", async function (req, res) {
     var dados = req.body;
     sendMail(dados.destinatario, dados.assunto, dados.texto);
 });
+
 router.post("/forgot-password", async function (req, res, next) {
     var dados = req.body;
     var result = await User.findOne({
@@ -207,6 +216,7 @@ router.post("/forgot-password", async function (req, res, next) {
         });
     }
 });
+
 router.post("/save-image-user", authToken, async function (req, res, next) {
     console.log("to tentando");
     let dados = req.body;
@@ -228,6 +238,7 @@ router.post("/save-image-user", authToken, async function (req, res, next) {
         return res.status(200).send(req.file);
     });
 });
+
 router.put("/check-user/:email", async function (req, res, next) {
     const email = req.params.email;
     const dados = req.body;
@@ -253,6 +264,7 @@ router.put("/check-user/:email", async function (req, res, next) {
         }
     });
 });
+
 router.put("/promote-admin/:email", async function (req, res, next) {
     const email = req.params.email;
     const dados = req.body;
@@ -275,11 +287,8 @@ router.put("/promote-admin/:email", async function (req, res, next) {
         }
     });
 });
-router.put("/update-user", multer(multerConfig).single("file"), async function (
-    req,
-    res,
-    next
-) {
+
+router.put("/update-user", multer(multerConfig).single("file"), async function (req, res, next) {
     var dados = req.body;
     let itens = {
         name_user: dados.nome,
@@ -287,6 +296,7 @@ router.put("/update-user", multer(multerConfig).single("file"), async function (
         nickname_user:
             dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
     };
+    console.log(itens);
     User.update(itens, { where: { iduser: dados.id } }).then((result) => {
         if (result[0] === 1) {
             sendMail(
@@ -294,7 +304,7 @@ router.put("/update-user", multer(multerConfig).single("file"), async function (
                 "Alteração de dados",
                 `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
                      Seus dados atuais são:<br/>
-                     Nome de usuário: ${dados.nickname}<br/>
+                     Nome de usuário: ${itens.nickname_user}<br/>
                      Nome: ${dados.nome}<br/>
                      E-mail: ${dados.email}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
@@ -302,7 +312,7 @@ router.put("/update-user", multer(multerConfig).single("file"), async function (
             );
             res.json({
                 success: true,
-                message: "Dados alterados com sucesso!"
+                message: "Dados alterados com sucesso!\nFaça login novamente para exibir seus novos dados!"
             });
         }
     });
