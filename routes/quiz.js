@@ -29,7 +29,7 @@ router.get("/get-questions", async (req, res) => {
             json_question->'respostas'->'q1'->>'pergunta' AS q1,
             json_question->'respostas'->'q2'->>'pergunta' AS q2,
             json_question->'respostas'->'q3'->>'pergunta' AS q3,
-            json_question->'respostas'->'q4'->>'pergunta' AS q4 FROM quiz WHERE idquestion IN (${numeros})
+            json_question->'respostas'->'q4'->>'pergunta' AS q4 FROM quiz ORDER BY RANDOM() LIMIT 5
         `
         )
         .then((resultado) =>
