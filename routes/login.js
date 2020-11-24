@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
+const { db } = require("../config/objetos");
 const router = express.Router();
 
 const jsonParser = bodyParser.json();
@@ -60,23 +61,30 @@ router.post("/", jsonParser, async function (req, res) {
 router.post("/teste-token", jsonParser, async function (req, res) {
     const token = req.body.token;
     if (token) {
-        jwt.verify(token, process.env.STRING_TOKEN_ENCODE, function (
-            err,
-            decoded
-        ) {
-            if (err) {
-                return res.status(401).json({
-                    success: "false",
-                    message: "Falha ao tentar autenticar o token!"
-                });
-            } else {
-                req.decoded = decoded;
-                res.json({
-                    success: "true",
-                    decoded: decoded
-                });
+        jwt.verify(
+            token,
+            process.env.STRING_TOKEN_ENCODE,
+            async function (err, decoded) {
+                console.log(decoded);
+                const result = await db.query(
+                    `SELECT * FROM users WHERE iduser = '${decoded.iduser}' and updated_at != '${decoded.updated_at}'`
+                );
+                if (result !== null) {
+                    decoded = result;
+                }
+                if (err) {
+                    return res.status(401).json({
+                        success: "false",
+                        message: "Falha ao tentar autenticar o token!"
+                    });
+                } else {
+                    res.json({
+                        success: "true",
+                        decoded: decoded
+                    });
+                }
             }
-        });
+        );
     }
 });
 module.exports = router;

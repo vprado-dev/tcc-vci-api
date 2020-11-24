@@ -10,6 +10,9 @@ const sendMail = require("../src/email");
 const authToken = require("../src/authToken");
 const multer = require("multer");
 const multerConfig = require("../config/multer");
+const path = require("path");
+const { db } = require("../config/objetos");
+
 router.use(jsonParser);
 
 router.get("/all", async function (req, res) {
@@ -108,7 +111,32 @@ router.get("/employee", jsonParser, async function (req, res, next) {
         });
     }
 });
-
+router.get("/image/:id", async function (req, res, next) {
+    var dados = req.body;
+    var result = await User.findOne({
+        attributes: ["path_image"],
+        where: {
+            iduser: req.params.id
+        }
+    }).catch(function (err) {
+        console.log(err);
+        res.json({
+            success: false,
+            message: "Erro ao buscar imagem"
+        });
+    });
+    if (result) {
+        res.sendFile(
+            path.resolve(
+                __dirname,
+                "..",
+                "public",
+                "uploads",
+                result.path_image
+            )
+        );
+    }
+});
 router.get("/:id", jsonParser, async function (req, res, next) {
     try {
         const result = await User.findAll({
@@ -128,12 +156,6 @@ router.get("/:id", jsonParser, async function (req, res, next) {
         });
     }
 });
-
-router.post(async function (req, res, next) {
-    //console.log(req);
-    return;
-});
-
 router.post("/", async function (req, res, next) {
     try {
         const dados = req.body;
@@ -178,12 +200,10 @@ router.post("/", async function (req, res, next) {
         });
     }
 });
-
 router.post("/email", async function (req, res) {
     var dados = req.body;
     sendMail(dados.destinatario, dados.assunto, dados.texto);
 });
-
 router.post("/forgot-password", async function (req, res, next) {
     var dados = req.body;
     var result = await User.findOne({
@@ -216,7 +236,6 @@ router.post("/forgot-password", async function (req, res, next) {
         });
     }
 });
-
 router.post("/save-image-user", authToken, async function (req, res, next) {
     console.log("to tentando");
     let dados = req.body;
@@ -238,7 +257,6 @@ router.post("/save-image-user", authToken, async function (req, res, next) {
         return res.status(200).send(req.file);
     });
 });
-
 router.put("/check-user/:email", async function (req, res, next) {
     const email = req.params.email;
     const dados = req.body;
@@ -264,7 +282,6 @@ router.put("/check-user/:email", async function (req, res, next) {
         }
     });
 });
-
 router.put("/promote-admin/:email", async function (req, res, next) {
     const email = req.params.email;
     const dados = req.body;
@@ -287,39 +304,52 @@ router.put("/promote-admin/:email", async function (req, res, next) {
         }
     });
 });
-
 router.put(
     "/update-user",
     multer(multerConfig).single("file"),
     async function (req, res, next) {
-        var dados = req.body;
-        let itens = {
-            name_user: dados.nome,
-            email_user: dados.email,
-            nickname_user:
-                dados.nome.charAt(0).toUpperCase() + dados.nome.split(" ")[1]
-        };
-        console.log(itens);
-        User.update(itens, { where: { iduser: dados.id } }).then((result) => {
-            if (result[0] === 1) {
-                sendMail(
-                    dados.email,
-                    "Alteração de dados",
-                    `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
+        try {
+            var dados = req.body;
+            console.log(req.file);
+            let itens = {
+                name_user: dados.nome,
+                email_user: dados.email,
+                nickname_user:
+                    dados.nome.charAt(0).toUpperCase() +
+                    dados.nome.split(" ")[1]
+            };
+            if (req.file.filename.length > 0) {
+                itens.path_image = req.file.filename;
+            }
+            console.log(itens);
+            User.update(itens, { where: { iduser: dados.id } }).then(
+                (result) => {
+                    if (result[0] === 1) {
+                        sendMail(
+                            dados.email,
+                            "Alteração de dados",
+                            `Olá ${dados.nome}, verificamos que você realizou uma alteração em seus dados pessoais no nosso sistema.<br /><br />
                      Seus dados atuais são:<br/>
                      Nome de usuário: ${itens.nickname_user}<br/>
                      Nome: ${dados.nome}<br/>
                      E-mail: ${dados.email}<br/>
                      Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
                      Atenciosamente, Equipe VCI.`
-                );
-                res.json({
-                    success: true,
-                    message:
-                        "Dados alterados com sucesso!\nFaça login novamente para exibir seus novos dados!"
-                });
-            }
-        });
+                        );
+                        res.json({
+                            success: true,
+                            message:
+                                "Dados alterados com sucesso!\nFaça login novamente para exibir seus novos dados!"
+                        });
+                    }
+                }
+            );
+        } catch (err) {
+            res.json({
+                success: false,
+                message: "Erro ao alterar dados do usuário"
+            });
+        }
     }
 );
 

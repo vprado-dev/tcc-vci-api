@@ -10,11 +10,12 @@ module.exports = {
         },
         filename: (req, file, cb) => {
             console.log("in filename");
-
+            var date = new Date();
             var salt = bcrypt.genSaltSync(10);
-            var name = bcrypt.hashSync(file.originalname, salt);
+            var name = bcrypt.hashSync(date + file.originalname, salt);
             var ext = file.mimetype.split("/")[1];
             var fileName = `${name}.${ext}`;
+            fileName.replace("\\", "");
             cb(null, fileName.replace("/", ""));
         }
     }),
