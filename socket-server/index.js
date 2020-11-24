@@ -89,10 +89,12 @@ io.on("connection", (socket) => {
         if(salas[room_index].players.length > 1){
             for (var i = 0; i < salas[room_index].players.length; i++) {
                 if (salas[room_index].players[i].id === args.id) {
-                    salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
+                    // salas[room_index].players[i].totem = [1,2,3,4,5,6,7,8,9];
                     // console.log(salas[room_index].players[i]);
                     salas[room_index].players[i].pontos += 1;
                     salas[room_index].players[i].time += args.time;
+                    salas[room_index].players[i].aux_totens.push(args.totem);
+                    salas[room_index].players[i].aux_totens.push(args.totem);
                     salas[room_index].players[i].aux_totens.push(args.totem);
                     salas[room_index].players[i].aux_totens.sort(sortfunction);
                     var aux = salas[room_index].players[i].aux_totens[0];
@@ -149,7 +151,7 @@ io.on("connection", (socket) => {
         }
     });
 
-    socket.on("winner-room", (args)=>{
+    socket.on("winner-room", (args) => {
         var room_index = findRoombyPID(args);
         salas[room_index] = null;
         for(var  i = room_index; i < salas.length; i++){
@@ -161,6 +163,18 @@ io.on("connection", (socket) => {
         }
         salas.length--;
         console.log(salas);
+    });
+
+    socket.on("isConnected", (args) => {
+        console.log("test");
+        var room_index = findRoombyPID(args);
+        if(salas[room_index].players.length > 1){
+            console.log(salas[room_index].players);
+            console.log("ok");
+        }else{
+            console.log("nao ok");
+            io.emit("roomProblem", salas[room_index].players);
+        }
     });
 
     socket.on("disconnect", () => {

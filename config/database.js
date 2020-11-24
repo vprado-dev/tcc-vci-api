@@ -20,6 +20,6 @@ const local = {
     }
 };
 // Aqui você só troca qnd quiser ir para produção ou local
-module.exports = producao;
+module.exports = local;
 // new Sequelize
 // (`postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@localhost:5432/${process.env.DB_NAME}`);
