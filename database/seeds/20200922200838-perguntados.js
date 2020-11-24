@@ -3,7 +3,7 @@ const nomes = [
     "Ordem de Produção",
     "Política de Qualidade",
     "Indicadores de Qualidade",
-    "Identificação e Rastreabialidade",
+    "Identificação e Rastreabilidade",
     "Controle de Qualidade",
     "Ação Corretiva",
     "Instrução Operacional",
