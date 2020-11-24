@@ -135,6 +135,11 @@ router.get("/image/:id", async function (req, res, next) {
                 result.path_image
             )
         );
+    } else {
+        res.json({
+            success: false,
+            message: "Não há nenhuma imagem cadastrada"
+        });
     }
 });
 router.get("/:id", jsonParser, async function (req, res, next) {
