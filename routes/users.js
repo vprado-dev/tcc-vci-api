@@ -310,7 +310,6 @@ router.put(
     async function (req, res, next) {
         try {
             var dados = req.body;
-            console.log(req.file);
             let itens = {
                 name_user: dados.nome,
                 email_user: dados.email,
@@ -318,7 +317,7 @@ router.put(
                     dados.nome.charAt(0).toUpperCase() +
                     dados.nome.split(" ")[1]
             };
-            if (req.file.filename.length > 0) {
+            if (req.file != null) {
                 itens.path_image = req.file.filename;
             }
             console.log(itens);
@@ -345,6 +344,7 @@ router.put(
                 }
             );
         } catch (err) {
+            console.log(err.message);
             res.json({
                 success: false,
                 message: "Erro ao alterar dados do usuário"

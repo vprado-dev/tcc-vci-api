@@ -65,23 +65,26 @@ router.post("/teste-token", jsonParser, async function (req, res) {
             token,
             process.env.STRING_TOKEN_ENCODE,
             async function (err, decoded) {
-                console.log(decoded);
-                const result = await db.query(
-                    `SELECT * FROM users WHERE iduser = '${decoded.iduser}' and updated_at != '${decoded.updated_at}'`
-                );
-                if (result !== null) {
-                    decoded = result;
-                }
-                if (err) {
-                    return res.status(401).json({
-                        success: "false",
-                        message: "Falha ao tentar autenticar o token!"
-                    });
-                } else {
-                    res.json({
-                        success: "true",
-                        decoded: decoded
-                    });
+                try {
+                    const result = await db.query(
+                        `SELECT * FROM users WHERE iduser = '${decoded.iduser}' and updated_at != '${decoded.updated_at}'`
+                    );
+                    if (result[0] !== null) {
+                        decoded = result[0][0];
+                    }
+                    if (err) {
+                        return res.status(401).json({
+                            success: "false",
+                            message: "Falha ao tentar autenticar o token!"
+                        });
+                    } else {
+                        res.json({
+                            success: "true",
+                            decoded: decoded
+                        });
+                    }
+                } catch (e) {
+                    console.log(e.message);
                 }
             }
         );
