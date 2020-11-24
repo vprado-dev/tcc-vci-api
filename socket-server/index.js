@@ -1,3 +1,4 @@
+const { Console } = require("console");
 const express = require("express");
 const http = require("http");
 const socketIO = require("socket.io");
@@ -159,24 +160,43 @@ io.on("connection", (socket) => {
             }
         }
         salas.length--;
-        console.log(salas);
     });
-
     socket.on("isConnected", (args) => {
-        console.log("test");
-        var room_index = findRoombyPID(args);
-        if(salas[room_index].players.length > 1){
-            console.log(salas[room_index].players);
-            console.log("ok");
-        }else{
-            console.log("nao ok");
-            io.emit("roomProblem", salas[room_index].players);
+        try{
+            var room_index = findRoombyPID(args);
+            // console.log(salas[room_index]);
+            for(var i = 0; i<salas[room_index].players.length; i++){
+                // console.log("deu Problema");
+                if(salas[room_index].players.length < 2){
+                    io.emit("roomProblem", salas[room_index].players);
+                    console.log("deu Problema2");
+                }
+            }
+        }catch(e){
+            
         }
+        
     });
 
     socket.on("disconnect", () => {
+        try{
+            var room_index = findRoombyPID(socket.id);
+            for(var i = 0; i<salas[room_index].players.length; i++){
+                if(salas[room_index].players[i].id === socket.id){
+                    console.log(salas[room_index].players)
+                    var test = salas[room_index].players.splice(i,1);
+                    console.log("salas disconecttt-------")
+                    console.log(salas[room_index].players)
+                    console.log(test);
+                }
+            }
+        }catch(e){
+
+        }
         console.log("Usuario desconectado.");
+
     });
+
 });
 
 server.listen(PORT, () => console.log(`Servidor iniciado na porta ${PORT}`));
