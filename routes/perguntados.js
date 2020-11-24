@@ -31,6 +31,7 @@ router.get("/get-all-questions", async function (req, res) {
             .query(
                 `
             SELECT idquestion,
+            totem_fk AS categoria,
             json_question->'enunciado' AS enunciado,
             json_question->'respostas'->'q1' AS q1,
             json_question->'respostas'->'q2' AS q2,
