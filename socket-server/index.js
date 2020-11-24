@@ -121,10 +121,7 @@ io.on("connection", (socket) => {
                             j--;
                         }
                     }
-                    //tirar isso aq dps
-                    if(salas[room_index].players[i].totem.length === 9){
-                        io.emit("winner", salas[room_index].players);
-                    }
+
                 }
             }
         }
