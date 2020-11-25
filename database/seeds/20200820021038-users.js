@@ -23,18 +23,18 @@ function dig(n1, n2, n3) {
     let retorno = semitotal - faltando + 11 - semitotal;
     return retorno <= 9 ? "0" + retorno : retorno;
 }
-gerarCpf();
 function aleatorio() {
     return ("" + Math.floor(Math.random() * 999)).padStart(3, "0");
 }
 const salt = bcrypt.genSaltSync(12);
 const users = [...Array(10)].map((user) => {
+    var cpf = gerarCpf();
     return {
         name_user: faker.internet.userName(),
         nickname_user: faker.internet.userName(),
         email_user: faker.internet.email(),
-        password_user: bcrypt.hashSync(gerarCpf(), salt),
-        cpf_user: gerarCpf(),
+        password_user: bcrypt.hashSync(cpf, salt),
+        cpf_user: cpf,
         admin: false,
         checked_user: false,
         path_image: "",
