@@ -35,9 +35,9 @@ const users = [...Array(10)].map((user) => {
         return {
             name_user: 'Login Admin',
             nickname_user: 'LAdmin',
-            email_user: faker.internet.email(),
-            password_user: bcrypt.hashSync(cpf, salt),
-            cpf_user: cpf,
+            email_user: "treinamentos.vci@gmail.com",
+            password_user: bcrypt.hashSync("123.456.789-10", salt),
+            cpf_user: "123.456.789-10",
             admin: true,
             checked_user: true,
             path_image: "",
