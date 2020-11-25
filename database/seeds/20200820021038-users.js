@@ -26,21 +26,39 @@ function dig(n1, n2, n3) {
 function aleatorio() {
     return ("" + Math.floor(Math.random() * 999)).padStart(3, "0");
 }
+var flag = true;
 const salt = bcrypt.genSaltSync(12);
 const users = [...Array(10)].map((user) => {
     var cpf = gerarCpf();
-    return {
-        name_user: faker.internet.userName(),
-        nickname_user: faker.internet.userName(),
-        email_user: faker.internet.email(),
-        password_user: bcrypt.hashSync(cpf, salt),
-        cpf_user: cpf,
-        admin: false,
-        checked_user: false,
-        path_image: "",
-        created_at: new Date(),
-        updated_at: new Date()
-    };
+    if(flag){
+        flag = false;
+        return {
+            name_user: 'Login Admin',
+            nickname_user: 'LAdmin',
+            email_user: faker.internet.email(),
+            password_user: bcrypt.hashSync(cpf, salt),
+            cpf_user: cpf,
+            admin: true,
+            checked_user: true,
+            path_image: "",
+            created_at: new Date(),
+            updated_at: new Date(),
+        };
+    }else{
+        return {
+            name_user: faker.internet.userName(),
+            nickname_user: faker.internet.userName(),
+            email_user: faker.internet.email(),
+            password_user: bcrypt.hashSync(cpf, salt),
+            cpf_user: cpf,
+            admin: false,
+            checked_user: false,
+            path_image: "",
+            created_at: new Date(),
+            updated_at: new Date()
+        };
+    }
+   
 });
 
 module.exports = {

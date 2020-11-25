@@ -95,8 +95,6 @@ io.on("connection", (socket) => {
                     salas[room_index].players[i].pontos += 1;
                     salas[room_index].players[i].time += args.time;
                     salas[room_index].players[i].aux_totens.push(args.totem);
-                    salas[room_index].players[i].aux_totens.push(args.totem);
-                    salas[room_index].players[i].aux_totens.push(args.totem);
                     salas[room_index].players[i].aux_totens.sort(sortfunction);
                     var aux = salas[room_index].players[i].aux_totens[0];
                     var count = 0;
