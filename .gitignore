@@ -104,3 +104,9 @@ dist
 .tern-port
 
 #Retirando esse arquivo para deixar apenas na api
+
+# exclude everything
+public/uploads/*
+
+# exception to the rule
+!public/uploads/.gitkeep 

@@ -184,7 +184,7 @@ router.post("/", async function (req, res, next) {
             sendMail(
                 dados.email,
                 "Bem-vindo ao VCI Treinamentos!",
-                `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo!<br /><br />
+                `Olá ${dados.nome}, verificamos que você se cadastrou no nosso sistema de treinamentos, seja bem-vindo! Aguarde o recebimento de um e-mail de validação de sua conta para poder entrar em nosso sistema.< br /><br />
                  Seus dados para login são:<br/>
                  Nome de usuário: ${dados.nickname}<br/>
                  Senha: sua senha é o seu CPF. Lembre-se de digitar os pontos (.) e hífen (-). <br/><br/> 
@@ -315,13 +315,6 @@ router.put(
     async function (req, res, next) {
         try {
             var dados = req.body;
-            if (dados.nome.split(" ")[1] == null) {
-                res.json({
-                    success: false,
-                    message:
-                        "Você precisa colocar um sobrenome para ser um Nome válido"
-                });
-            }
             let itens = {
                 name_user: dados.nome,
                 email_user: dados.email,
@@ -350,7 +343,7 @@ router.put(
                         res.json({
                             success: true,
                             message:
-                                "Dados alterados com sucesso!\nFaça login novamente para exibir seus novos dados!"
+                                "Dados alterados com sucesso!\nRecarregue a página para exibir seus novos dados!"
                         });
                     }
                 }
