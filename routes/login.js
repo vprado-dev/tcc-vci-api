@@ -5,7 +5,6 @@ const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
 const { db } = require("../config/objetos");
 const router = express.Router();
-
 const jsonParser = bodyParser.json();
 
 router.post("/", jsonParser, async function (req, res) {
@@ -66,11 +65,13 @@ router.post("/teste-token", jsonParser, async function (req, res) {
             process.env.STRING_TOKEN_ENCODE,
             async function (err, decoded) {
                 try {
-                    const result = await db.query(
-                        `SELECT * FROM users WHERE iduser = '${decoded.iduser}' and updated_at != '${decoded.updated_at}'`
-                    );
-                    if (result[0] !== null) {
-                        decoded = result[0][0];
+                    const result = await User.findOne({
+                        where : {
+                            iduser : decoded.iduser
+                        }
+                    })
+                    if (result != null) {
+                        decoded = result;
                     }
                     if (err) {
                         return res.status(401).json({
@@ -84,7 +85,9 @@ router.post("/teste-token", jsonParser, async function (req, res) {
                         });
                     }
                 } catch (e) {
-                    console.log(e.message);
+                    res.json({
+                        message: e.message
+                    })
                 }
             }
         );
