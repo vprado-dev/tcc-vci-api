@@ -321,6 +321,7 @@ router.put(
                     message:	
                         "Você precisa colocar um sobrenome para ser um nome válido"	
                 });	
+                return;
             }
             let itens = {
                 name_user: dados.nome,
