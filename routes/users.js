@@ -315,6 +315,13 @@ router.put(
     async function (req, res, next) {
         try {
             var dados = req.body;
+            if (dados.nome.split(" ")[1] == null) {	
+                res.json({	
+                    success: false,	
+                    message:	
+                        "Você precisa colocar um sobrenome para ser um nome válido"	
+                });	
+            }
             let itens = {
                 name_user: dados.nome,
                 email_user: dados.email,
