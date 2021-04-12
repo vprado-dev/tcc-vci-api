@@ -1,11 +1,6 @@
 const express               = require('express');
-const bodyParser            = require('body-parser');
 const Game                  = require('../database/models/game');      
-const jwt                   = require('jsonwebtoken');
-const { route }             = require('./login');
-const { db }                = require('../config/objetos')
 const router                = express.Router();
-const jsonParser            = bodyParser.json();
 
 router.get("/all", async function (req, res) {
     try{
@@ -24,7 +19,7 @@ router.get("/all", async function (req, res) {
     }
 })
 
-router.get("/:id",jsonParser,async function (req, res, next) {
+router.get("/:id",async function (req, res, next) {
     try{
         const result = await Game.findOne({
             where: {

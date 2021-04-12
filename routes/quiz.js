@@ -1,13 +1,7 @@
 const express = require("express");
-const Game = require("../database/models/game");
-const jwt = require("jsonwebtoken");
 const router = express.Router();
 const Quiz = require("../database/models/quiz");
-const Ranking = require("../database/models/ranking");
 const { db } = require("../config/objetos");
-const authTk = require("../src/authToken");
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
 /*
     Pegar 5 perguntas aleatórias,
     Validar as respostas e retornar os pontos

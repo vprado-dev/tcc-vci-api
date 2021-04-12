@@ -1,17 +1,12 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const User = require("../database/models/users");
-const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const { route } = require("./login");
 const router = express.Router();
-const jsonParser = bodyParser.json();
 const sendMail = require("../src/email");
 const authToken = require("../src/authToken");
 const multer = require("multer");
 const multerConfig = require("../config/multer");
 const path = require("path");
-const { db } = require("../config/objetos");
 
 router.use(jsonParser);
 

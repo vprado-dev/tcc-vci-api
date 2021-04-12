@@ -1,13 +1,10 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const bcrypt = require("bcrypt");
 const User = require("../database/models/users");
 const jwt = require("jsonwebtoken");
-const { db } = require("../config/objetos");
 const router = express.Router();
-const jsonParser = bodyParser.json();
 
-router.post("/", jsonParser, async function (req, res) {
+router.post("/", async function (req, res) {
     const user = {
         nickname_user: req.body.login,
         password_user: req.body.password
@@ -57,7 +54,7 @@ router.post("/", jsonParser, async function (req, res) {
         });
     }
 });
-router.post("/teste-token", jsonParser, async function (req, res) {
+router.post("/teste-token", async function (req, res) {
     const token = req.body.token;
     if (token) {
         jwt.verify(

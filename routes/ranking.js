@@ -1,12 +1,6 @@
 const express               = require('express');
-const bodyParser            = require('body-parser');
-const Ranking               = require('../database/models/ranking');
-const User                  = require('../database/models/users');        
-const jwt                   = require('jsonwebtoken');
-const { route }             = require('./login');
 const { db }                = require('../config/objetos')
 const router                = express.Router();
-const jsonParser = bodyParser.json();
 
 router.get("/all", async function(req, res) {
     try{

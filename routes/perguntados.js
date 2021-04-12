@@ -5,8 +5,6 @@ const Question = require("../database/models/questions");
 const Perguntados = require("../database/models/perguntados");
 const Game = require("../database/models/game");
 const { db } = require("../config/objetos");
-const bodyParser = require("body-parser");
-const jsonParser = bodyParser.json();
 
 router.get("/all", async function (req, res) {
     try {
